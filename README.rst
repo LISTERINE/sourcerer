@@ -11,7 +11,7 @@ sourcerer
 
 Library to programatically genrate python source code
 
-code-block:: python
+.. code-block:: python
 
     {
         from yaml import load
