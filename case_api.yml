@@ -1,0 +1,274 @@
+# this is the Swagger CASE-RAPI spec
+swagger: '2.0'
+info:
+  title: CASE Remote API (RAPI)
+  description: Remote API for querying CASE
+  version: "1.0.0"
+
+basePath: /rapi
+paths:
+  #user management
+  /login:
+    get:
+      summary: Login to CASE
+      parameters:
+        - name: api_key
+          in: query
+          type: string
+          format: string
+          required: true
+      responses:
+        200:
+          description: Success
+  /user/about_me:
+    get:
+      summary: Return user information
+      responses:
+        200:
+          description: Success
+  #search
+  /search/sample:
+    post:
+      summary: Search for a sample
+      parameters:
+        - name: term
+          in: formData
+          description: Term to search for
+          required: True
+        - name: limit
+          in: formData
+          description: Number of results to return
+          required: False
+      responses:
+        200:
+          description: Success
+  /search/detonation:
+    post:
+      summary: Search for a detonation
+      parameters:
+        - name: term
+          in: formData
+          description: Term to search for
+          required: True
+        - name: limit
+          in: formData
+          description: Number of results to return
+          required: False
+      responses:
+        200:
+          description: Success
+  /search/url:
+    post:
+      summary: Search for a url
+      parameters:
+        - name: term
+          in: formData
+          description: Term to search for
+          required: True
+        - name: limit
+          in: formData
+          description: Number of results to return
+          required: False
+      responses:
+        200:
+          description: Success          
+  /search/sample:
+    post:
+      summary: Search for a sample
+      parameters:
+        - name: term
+          in: formData
+          description: Term to search for
+          required: True
+        - name: limit
+          in: formData
+          description: Number of results to return
+          required: False
+      responses:
+        200:
+          description: Success
+  /search/malware:
+    post:
+      summary: Search for a malware family
+      parameters:
+        - name: term
+          in: formData
+          description: Term to search for
+          required: True
+        - name: limit
+          in: formData
+          description: Number of results to return
+          required: False
+      responses:
+        200:
+          description: Success
+  #file submission
+  /submit_sample_file:
+    post:
+      summary: submit a file for processing
+      parameters:
+        - name: uploadFile
+          in: formData
+          description: contents of submission
+          required: True
+        - name: source
+          in: formData
+          description: the source of the submission
+          required: True
+        - name: tlp
+          in: formData
+          description: the TLP of the submission. Must be <red|amber|green|white>
+          required: True
+        - name: priority
+          in: formData
+          description: the priority of the submission <high|medium|low>
+          required: True
+        - name: timeout
+          in: formData
+          description: timeout for actual malware execution
+          required: False
+        - name: sandbox_profile_id
+          in: formData
+          description: the profile_id of the sandbox environment to run the submission in
+          required: False
+        - name: exec_args
+          in: formData
+          description: the args to use when executing the malware sample
+          required: False
+        - name: firewall_policy
+          in: formData
+          description: the firewall policy ID to use when executing the submission
+          required: False
+        - name: reprocess
+          in: formData
+          description: whether or not the sample should be executed if we've already processed it
+          required: True
+      responses:
+        200:
+          description: Success
+  /submit_vt_hash:
+    post:
+      summary: submit a VT file hash for processing
+      parameters:
+        - name: hash
+          in: formData
+          description: file hash to query VT for, download and execute
+          required: True
+        - name: source
+          in: formData
+          description: the source of the submission
+          required: True
+        - name: tlp
+          in: formData
+          description: the TLP of the submission. Must be <red|amber|green|white>
+          required: True
+        - name: priority
+          in: formData
+          description: the priority of the submission <high|medium|low>
+          required: True
+        - name: timeout
+          in: formData
+          description: timeout for actual malware execution
+          required: False
+        - name: sandbox_profile_id
+          in: formData
+          description: the profile_id of the sandbox environment to run the submission in
+          required: False
+        - name: exec_args
+          in: formData
+          description: the args to use when executing the malware sample
+          required: False
+        - name: firewall_policy
+          in: formData
+          description: the firewall policy ID to use when executing the submission
+          required: False
+        - name: reprocess
+          in: formData
+          description: whether or not the sample should be executed if we've already processed it
+          required: True
+      responses:
+        200:
+          description: Success
+  /submit_sample_url:
+    post:
+      summary: submit a URL
+      parameters:
+        - name: url
+          in: formData
+          description: url to visit
+          required: True
+        - name: source
+          in: formData
+          description: the source of the submission
+          required: True
+        - name: tlp
+          in: formData
+          description: the TLP of the submission. Must be <red|amber|green|white>
+          required: True
+        - name: priority
+          in: formData
+          description: the priority of the submission <high|medium|low>
+          required: True
+        - name: timeout
+          in: formData
+          description: timeout for actual malware execution
+          required: False
+        - name: sandbox_profile_id
+          in: formData
+          description: the profile_id of the sandbox environment to run the submission in
+          required: False
+        - name: exec_args
+          in: formData
+          description: the args to use when executing the malware sample
+          required: False
+        - name: firewall_policy
+          in: formData
+          description: the firewall policy ID to use when executing the submission
+          required: False
+        - name: reprocess
+          in: formData
+          description: whether or not the sample should be executed if we've already processed it
+          required: True
+      responses:
+        200:
+          description: Success
+  #reports
+  /detonation/{id}:
+    get:
+      summary: get a detonation report by id
+      responses:
+        200:
+          description: Success. JSON object.
+  /malware/{id}:
+    get:
+      summary: get a malware family report by id
+      responses:
+        200:
+          description: Success. JSON object.
+  /sample/{id}:
+    get:
+      summary: get a sample report by id
+      responses:
+        200:
+          description: Success. JSON object.
+  /url/{id}:
+    get:
+      summary: get a url report by id
+      responses:
+        200:
+          description: Success. JSON object.
+  #download artifacts
+  /detonation/{id}/pcap:
+    get:
+      summary: get PCAP for detonation
+      produces: application/vnd-pcap
+      responses:
+        200:
+          description: Success.
+  /detonation/{id}/binary:
+    get:
+      summary: get binary for detonation
+      produces: application/octet-stream
+      responses:
+        200:
+          description: Success

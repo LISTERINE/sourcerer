@@ -1,0 +1,400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sourcerer package &mdash; sourcerer 0.0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sourcerer 0.0.3 documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">sourcerer 0.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sourcerer-package">
+<h1>sourcerer package<a class="headerlink" href="#sourcerer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-sourcerer.base">
+<span id="sourcerer-base-module"></span><h2>sourcerer.base module<a class="headerlink" href="#module-sourcerer.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="sourcerer.base.Document">
+<em class="property">class </em><code class="descclassname">sourcerer.base.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
+<p>All content is rooted in this base document</p>
+<dl class="method">
+<dt id="sourcerer.base.Document.export">
+<code class="descname">export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Document.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Document.export" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.base.Statement">
+<em class="property">class </em><code class="descclassname">sourcerer.base.</code><code class="descname">Statement</code><span class="sig-paren">(</span><em>code=''</em>, <em>scope=None</em>, <em>whitespace=''</em>, <em>line_ending='n'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A line of code</p>
+<p>A Statement is a line of code that may or may not have a child Scope</p>
+<dl class="method">
+<dt id="sourcerer.base.Statement.add_child">
+<code class="descname">add_child</code><span class="sig-paren">(</span><em>child</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.add_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.add_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a child to this statements scope</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>child (Statement): The child to append</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.base.Statement.add_children">
+<code class="descname">add_children</code><span class="sig-paren">(</span><em>child_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.add_children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.add_children" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience function to load multiple children into this scope</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>child_list (list): a list of children to append to this objects scope</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.base.Statement.build_renderer">
+<code class="descname">build_renderer</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.build_renderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.build_renderer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite this function to customize how render should be called
+for particular objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.base.Statement.create_lineage">
+<code class="descname">create_lineage</code><span class="sig-paren">(</span><em>lineage</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.create_lineage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.create_lineage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a hierarchical lineage of children with this object as the oldest member. eg.
+children = [c1, c2, c3]
+result &#8211; self (top level)</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><a href="#id1"><span class="problematic" id="id2">|</span></a>-&gt; c1</dt>
+<dd><dl class="first last docutils">
+<dt><a href="#id3"><span class="problematic" id="id4">|</span></a>-&gt; c2</dt>
+<dd><a href="#id5"><span class="problematic" id="id6">|</span></a>-&gt; c3</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.base.Statement.format">
+<code class="descname">format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract function to format properties this object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.base.Statement.from_lineage">
+<code class="descname">from_lineage</code><span class="sig-paren">(</span><em>lineage</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.from_lineage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.from_lineage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a hierarchical list of parents with this object as the youngest decentant</p>
+<p>Lineage will be arranged in the order the parents are provided. eg.
+parents = [p1, p2, p3]
+result &#8211; p1 (top level)</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><a href="#id7"><span class="problematic" id="id8">|</span></a>-&gt;p2</dt>
+<dd><dl class="first last docutils">
+<dt><a href="#id9"><span class="problematic" id="id10">|</span></a>-&gt;p3</dt>
+<dd><a href="#id11"><span class="problematic" id="id12">|</span></a>-&gt;self</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>In this example the top level parent would be at scope level n+1 and 
+this object would be at scope level n+4.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>lineage (list): a hierarchical list of parents for this object.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.base.Statement.from_parent">
+<code class="descname">from_parent</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.from_parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.from_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append this statement to a parents scope</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>parent (Statement): The aprrent to be appended to</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.base.Statement.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract function to set self.code</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.base.Statement.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>level=-1</em>, <em>increment=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Statement.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Statement.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this statement and all children recursively</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>level (int): The indentation level to set for this statement
+increment (int): The number of indentation levels for the child scope</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="sourcerer.base.to_statement">
+<code class="descclassname">sourcerer.base.</code><code class="descname">to_statement</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#to_statement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.to_statement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-sourcerer.callables">
+<span id="sourcerer-callables-module"></span><h2>sourcerer.callables module<a class="headerlink" href="#module-sourcerer.callables" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="sourcerer.callables.CallerObj">
+<em class="property">class </em><code class="descclassname">sourcerer.callables.</code><code class="descname">CallerObj</code><span class="sig-paren">(</span><em>caller_list=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#CallerObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.CallerObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.callables.FunctionObj" title="sourcerer.callables.FunctionObj"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.callables.FunctionObj</span></code></a></p>
+<p>Used to call functions or instatntiate Classes</p>
+<dl class="method">
+<dt id="sourcerer.callables.CallerObj.format">
+<code class="descname">format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#CallerObj.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.CallerObj.format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.callables.CallerObj.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#CallerObj.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.CallerObj.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the args and caller list for this object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.callables.DecoratorObj">
+<em class="property">class </em><code class="descclassname">sourcerer.callables.</code><code class="descname">DecoratorObj</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#DecoratorObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.DecoratorObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.callables.FunctionObj" title="sourcerer.callables.FunctionObj"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.callables.FunctionObj</span></code></a></p>
+<p>Sets the &#64; on the header.
+result will look like &#8216;&#64;fn(...)&#8217;</p>
+<dl class="method">
+<dt id="sourcerer.callables.DecoratorObj.build_renderer">
+<code class="descname">build_renderer</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#DecoratorObj.build_renderer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.DecoratorObj.build_renderer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.callables.FunctionObj">
+<em class="property">class </em><code class="descclassname">sourcerer.callables.</code><code class="descname">FunctionObj</code><span class="sig-paren">(</span><em>name=''</em>, <em>arg_names=None</em>, <em>kwarg_pairs=None</em>, <em>varargs=False</em>, <em>keywords=False</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#FunctionObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.FunctionObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
+<p>The base of callable objects</p>
+<dl class="method">
+<dt id="sourcerer.callables.FunctionObj.build_args_kwargs">
+<code class="descname">build_args_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#FunctionObj.build_args_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.FunctionObj.build_args_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the argspec for the function</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.callables.FunctionObj.format">
+<code class="descname">format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#FunctionObj.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.FunctionObj.format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.callables.FunctionObj.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#FunctionObj.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.FunctionObj.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the def and : in a function header.</p>
+<p>Result will look like &#8216;def fn(...):&#8217;</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="sourcerer.callables.string_args">
+<code class="descclassname">sourcerer.callables.</code><code class="descname">string_args</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#string_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.string_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enclose your positional arguments in strings so it can be used as an 
+argument, rather than part of the arg spec.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>args (list/string): A string/list of strings to be quoted</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="sourcerer-engine-module">
+<h2>sourcerer.engine module<a class="headerlink" href="#sourcerer-engine-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-sourcerer.formatters">
+<span id="sourcerer-formatters-module"></span><h2>sourcerer.formatters module<a class="headerlink" href="#module-sourcerer.formatters" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="sourcerer.formatters.CallableFormatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">CallableFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.Formatter" title="sourcerer.formatters.Formatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.Formatter</span></code></a></p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.CallableFormatter.arg_names">
+<em class="property">classmethod </em><code class="descname">arg_names</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter.arg_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter.arg_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract function for formatting positional arguments</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="sourcerer.formatters.CallableFormatter.kwarg_pairs">
+<em class="property">classmethod </em><code class="descname">kwarg_pairs</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter.kwarg_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter.kwarg_pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract function for formatting keyword arguments</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="sourcerer.formatters.CallableFormatter.name">
+<em class="property">classmethod </em><code class="descname">name</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace all punctuation in a callables name with underscores</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.formatters.Formatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">Formatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#Formatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.Formatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Formatting operations for syntax objects</p>
+<p>Name functions after the property they will be operating on.
+All function should take one argument of &#8216;property&#8217;.</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.Formatter.apply">
+<em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>syntax_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#Formatter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.Formatter.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply all formatters to the given object</p>
+<p>This method will search the given syntax object for any property which
+has the same name as a formatter.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>syntax_obj (object): The object with the attributes to be formatted</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sourcerer-parser-module">
+<h2>sourcerer.parser module<a class="headerlink" href="#sourcerer-parser-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-sourcerer.simple_statements">
+<span id="sourcerer-simple-statements-module"></span><h2>sourcerer.simple_statements module<a class="headerlink" href="#module-sourcerer.simple_statements" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="sourcerer.simple_statements.Docstring">
+<em class="property">class </em><code class="descclassname">sourcerer.simple_statements.</code><code class="descname">Docstring</code><span class="sig-paren">(</span><em>doc_string</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/simple_statements.html#Docstring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.simple_statements.Docstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
+<dl class="method">
+<dt id="sourcerer.simple_statements.Docstring.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/simple_statements.html#Docstring.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.simple_statements.Docstring.generate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.simple_statements.ReturnObj">
+<em class="property">class </em><code class="descclassname">sourcerer.simple_statements.</code><code class="descname">ReturnObj</code><span class="sig-paren">(</span><em>_type='return'</em>, <em>val=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/simple_statements.html#ReturnObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.simple_statements.ReturnObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
+<p>Terminate a function</p>
+<dl class="method">
+<dt id="sourcerer.simple_statements.ReturnObj.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/simple_statements.html#ReturnObj.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.simple_statements.ReturnObj.generate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-sourcerer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-sourcerer" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">sourcerer package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-sourcerer.base">sourcerer.base module</a></li>
+<li><a class="reference internal" href="#module-sourcerer.callables">sourcerer.callables module</a></li>
+<li><a class="reference internal" href="#sourcerer-engine-module">sourcerer.engine module</a></li>
+<li><a class="reference internal" href="#module-sourcerer.formatters">sourcerer.formatters module</a></li>
+<li><a class="reference internal" href="#sourcerer-parser-module">sourcerer.parser module</a></li>
+<li><a class="reference internal" href="#module-sourcerer.simple_statements">sourcerer.simple_statements module</a></li>
+<li><a class="reference internal" href="#module-sourcerer">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sourcerer.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">sourcerer 0.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Jonathan Ferretti.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

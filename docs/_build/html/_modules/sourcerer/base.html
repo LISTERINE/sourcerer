@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sourcerer.base &mdash; sourcerer 0.0.3 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="sourcerer 0.0.3 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">sourcerer 0.0.3 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for sourcerer.base</h1><div class="highlight"><pre>
+<span class="c">#!env/bin/python</span>
+<span class="kn">from</span> <span class="nn">pdb</span> <span class="kn">import</span> <span class="n">set_trace</span>
+<span class="kn">from</span> <span class="nn">formatters</span> <span class="kn">import</span> <span class="n">Formatter</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">stdout</span>
+
+
+<div class="viewcode-block" id="Statement"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement">[docs]</a><span class="k">class</span> <span class="nc">Statement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A line of code </span>
+<span class="sd">    </span>
+<span class="sd">    A Statement is a line of code that may or may not have a child Scope</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">whitespace</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">line_ending</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        self.code is the actual line of code that this object represents.</span>
+<span class="sd">        self.scope (if any) is the child scope of this statement. eg.</span>
+<span class="sd">         self.code -&gt;   while 1:</span>
+<span class="sd">                        {   do thing 1</span>
+<span class="sd">         self.scope -&gt;  {   do thing 2</span>
+<span class="sd">                        {   do thing 3</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            code (str): The code that will be represented</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scope</span> <span class="o">=</span> <span class="n">scope</span> <span class="k">if</span> <span class="n">scope</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">whitespace</span> <span class="o">=</span> <span class="n">whitespace</span> <span class="k">if</span> <span class="n">whitespace</span> <span class="k">else</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_ending</span> <span class="o">=</span> <span class="n">line_ending</span>
+
+<div class="viewcode-block" id="Statement.add_child"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.add_child">[docs]</a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Append a child to this statements scope </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            child (Statement): The child to append</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">Statement</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;child &quot;</span> <span class="o">+</span> <span class="n">child</span> <span class="o">+</span> <span class="s">&quot; is not a Statement&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Statement.add_children"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.add_children">[docs]</a>    <span class="k">def</span> <span class="nf">add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; A convenience function to load multiple children into this scope</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            child_list (list): a list of children to append to this objects scope</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">child_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Statement.create_lineage"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.create_lineage">[docs]</a>    <span class="k">def</span> <span class="nf">create_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineage</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a hierarchical lineage of children with this object as the oldest member. eg.</span>
+<span class="sd">        children = [c1, c2, c3]</span>
+<span class="sd">        result -- self (top level)</span>
+<span class="sd">                    |-&gt; c1</span>
+<span class="sd">                        |-&gt; c2</span>
+<span class="sd">                            |-&gt; c3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_node</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">lineage</span><span class="p">:</span>
+            <span class="n">current_node</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+            <span class="n">current_node</span> <span class="o">=</span> <span class="n">child</span>
+</div>
+<div class="viewcode-block" id="Statement.from_parent"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.from_parent">[docs]</a>    <span class="k">def</span> <span class="nf">from_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Append this statement to a parents scope </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            parent (Statement): The aprrent to be appended to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">Statement</span><span class="p">):</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">scope</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;parent &quot;</span> <span class="o">+</span> <span class="n">parent</span> <span class="o">+</span> <span class="s">&quot; is not a Statement&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Statement.from_lineage"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.from_lineage">[docs]</a>    <span class="k">def</span> <span class="nf">from_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineage</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a hierarchical list of parents with this object as the youngest decentant</span>
+
+<span class="sd">        Lineage will be arranged in the order the parents are provided. eg.</span>
+<span class="sd">        parents = [p1, p2, p3]</span>
+<span class="sd">        result -- p1 (top level)</span>
+<span class="sd">                  |-&gt;p2</span>
+<span class="sd">                     |-&gt;p3</span>
+<span class="sd">                        |-&gt;self</span>
+<span class="sd">        In this example the top level parent would be at scope level n+1 and </span>
+<span class="sd">        this object would be at scope level n+4.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lineage (list): a hierarchical list of parents for this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_node</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">lineage</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="n">lineage</span><span class="p">:</span>
+            <span class="n">current_node</span><span class="o">.</span><span class="n">from_parent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+            <span class="n">current_node</span> <span class="o">=</span> <span class="n">parent</span>
+</div>
+<div class="viewcode-block" id="Statement.format"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Abstract function to format properties this object &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Statement.generate"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Abstract function to set self.code &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Statement.build_renderer"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.build_renderer">[docs]</a>    <span class="k">def</span> <span class="nf">build_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Overwrite this function to customize how render should be called</span>
+<span class="sd">        for particular objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Statement.render"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return this statement and all children recursively </span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            level (int): The indentation level to set for this statement</span>
+<span class="sd">            increment (int): The number of indentation levels for the child scope</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">yield</span> <span class="s">&quot;{}{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">whitespace</span> <span class="o">*</span> <span class="n">level</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">line_ending</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">:</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">format</span><span class="p">()</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+            <span class="n">child_renderer</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">build_renderer</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">level</span> <span class="o">+</span> <span class="n">increment</span><span class="p">)</span>
+            <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">child_renderer</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+</div></div>
+<div class="viewcode-block" id="Document"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Document">[docs]</a><span class="k">class</span> <span class="nc">Document</span><span class="p">(</span><span class="n">Statement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; All content is rooted in this base document &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_ending</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+<div class="viewcode-block" id="Document.export"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Document.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_renderer</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">renderer</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">node</span>
+
+</div></div>
+<div class="viewcode-block" id="to_statement"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.to_statement">[docs]</a><span class="k">def</span> <span class="nf">to_statement</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Statement</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">item</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">sourcerer 0.0.3 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Jonathan Ferretti.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>
