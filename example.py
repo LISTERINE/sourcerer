@@ -1,22 +1,24 @@
 from yaml import load
-from sys import stdout
-from sourcerer.base import Statement, Document
-from sourcerer.callables import FunctionObj, DecoratorObj, string_args
-from sourcerer.simple_statements import ReturnObj, Docstring
-
+from sourcerer.base import Document
+from sourcerer.callables import FunctionObj, DecoratorObj
+from sourcerer.simple_statements import ReturnObj
 from sys import argv
-from pdb import set_trace
 
+# Create a docuemnt to put our code in
 doc = Document()
 
+# Open our yml file and read it in
 api = load(open(argv[1], 'r').read())
 for path in api['paths']:
-    route = [
-        DecoratorObj(name="route", arg_names=[path]),
-        FunctionObj(name=path),
-        ReturnObj()
-    ]
+    route = [DecoratorObj(name="route", arg_names=[path]), # A decorator: @routename("mypath")
+             FunctionObj(name=path), # A function: def routename():
+             ReturnObj()] # A return statement: return
 
-    doc.create_lineage(route)
-    
-doc.output()
+    doc.create_lineage(route) # Cascade these objects into the main document scope
+                              # ...
+                              # @routename("mypath")
+                              # def routename():
+                              #     return
+                              # ...
+
+doc.output() # Send output to standard out (output to file optional)
