@@ -27,6 +27,11 @@ class Statement(object):
         self.whitespace = whitespace if whitespace else ' ' * 4
         self.line_ending = line_ending
 
+    def __iter__(self):
+        renderer = self.build_renderer()
+        for node in renderer:
+            yield node
+
     def add_child(self, child):
         """ Append a child to this statements scope 
         
@@ -133,10 +138,15 @@ class Document(Statement):
         super(Document, self).__init__(*args, **kwargs)
         self.line_ending = ''
 
-    def export(self):
-        renderer = self.build_renderer()
-        for node in renderer:
-            yield node
+    def output(self, output_file_name=''):
+        """ Write out the syntax tree """
+
+        syntax_string = ''.join(self)
+        if not output_file_name:
+            stdout.write(syntax_string)
+        else:
+            with open(output_file_name, 'w') as output:
+                output.write(syntax_string)
 
 
 def to_statement(item):
