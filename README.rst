@@ -13,7 +13,6 @@ Library to programatically genrate python source code
 
 .. code-block:: python
 
-    {
         from yaml import load
         from sourcerer.base import Document
         from sourcerer.callables import FunctionObj, DecoratorObj
@@ -38,8 +37,6 @@ Library to programatically genrate python source code
                                       # ...
 
         doc.output() # Send output to standard out (output to file optional)
-
-    }
 
 Features
 --------
