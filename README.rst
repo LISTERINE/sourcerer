@@ -81,11 +81,19 @@ Your Syntax Maps top-level keys define what your Spellbook top-level sections ar
 
 In the given example, the only top-level Spellbook section is 'functions'. In the Syntax Map, the 'functions' key's value says several things:
 
+
 1. For each child node encountered, create a new FunctionObj (defined by 'type')
+
+
 2. The key defining each child node is the 'name' argument for the FunctionObj
+
+
 3. The sub-keys of the child node are properties of the FunctionObj. The values of those sub-keys are can be one of two things
 
+
     a. If the value is in the value map, it is an argument to FunctionObj
+
+
     b. If the value is in the children map, it should be placed into the scope of the FunctionObj. The value will be looked up in the Syntax Map top-level to see if it can be be instantiated into a new sourcerer object.
 
 The Syntax Map schema should consist of:
