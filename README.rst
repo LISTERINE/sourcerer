@@ -92,11 +92,14 @@ In the given example, the only top-level Spellbook section is 'functions'. In th
    2. If the value is in the children map, it should be placed into the scope of the FunctionObj. The value will be looked up in the Syntax Map top-level to see if it can be be instantiated into a new sourcerer object.
 
 The Syntax Map schema should consist of:
-""""""""""""""""""""""""""""""""""""""""
-type: The class name to instantiate
-key: what the key for the node represents
-value_map: map properties to arguments to the class
-children: values that should be instantiated and placed into the current nodes child scope
+****************************************
+* type: The class name to instantiate
+
+* key: what the key for the node represents
+
+* value_map: map properties to arguments to the class
+
+* children: values that should be instantiated and placed into the current nodes child scope
 
 
 
