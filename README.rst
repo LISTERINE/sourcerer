@@ -95,8 +95,7 @@ In the given example, the only top-level Spellbook section is 'functions'. In th
 \            to see if it can be be instantiated into a new sourcerer object.
 
 The Syntax Map schema should consist of:
-----------------------------------------
-
+""""""""""""""""""""""""""""""""""""""""
 type: The class name to instantiate
 key: what the key for the node represents
 value_map: map properties to arguments to the class
