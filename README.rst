@@ -64,6 +64,7 @@ Example Syntax Map to parse this Spellbook:
 """""""""""""""""""""""""""""""""""""""""""
 .. code-block:: python
 
+    # Without inline comments
     {"functions": {'type': FunctionObj,
                    'key': 'name',
                    'value_map': {'args': 'arg_names',
@@ -71,6 +72,20 @@ Example Syntax Map to parse this Spellbook:
                                  'varargs': 'varargs',
                                  'keywords': 'keywords'},
                    'children':{'ret':'return'}},
+     "return": {'type': ReturnObj,
+                 'value_map': {'value':'val'}}
+    }
+
+    # With inline comments
+    {"functions": {'type': FunctionObj, # Each top level entry under functions is a FunctionObj
+                   'key': 'name', # The key for its parameter dict is its name argument
+                   'value_map': {'args': 'arg_names',  # Define what args are called in the markups schema
+                                 'kwargs': 'kwarg_pairs',
+                                 'varargs': 'varargs',
+                                 'keywords': 'keywords'},
+                   'children':{'ret':'return'}}, # When top-level objects are seen their values will be 
+                                                 # pared as well, building a new object from the mapping 
+                                                 # they specify and then appended to this object
      "return": {'type': ReturnObj,
                  'value_map': {'value':'val'}}
     }
