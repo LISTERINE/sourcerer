@@ -83,17 +83,17 @@ In the given example, the only top-level Spellbook section is 'functions'. In th
 
 1. For each child node encountered, create a new FunctionObj (defined by 'type')
 2. The key defining each child node is the 'name' argument for the FunctionObj
-3. The sub-keys of the child node are properties of the FunctionObj. The values of those sub-keys are can be one of two things:
+3. The sub-keys of the child node are properties of the FunctionObj. The values of those sub-keys are can be one of two things\:
 
     1. If the value is in the value map, it is an argument to FunctionObj
     2. If the value is in the children map, it should be placed into the scope of the FunctionObj. The value will be looked up in the Syntax Map top-level to see if it can be be instantiated into a new sourcerer object.
 
 The Syntax Map schema should consist of:
 ----------------------------------------
-type: The class name to instantiate
-key: what the key for the node represents
-value_map: map properties to arguments to the class
-children: values that should be instantiated and placed into the current nodes child scope
+type\: The class name to instantiate
+key\: what the key for the node represents
+value_map\: map properties to arguments to the class
+children\: values that should be instantiated and placed into the current nodes child scope
 
 
 
