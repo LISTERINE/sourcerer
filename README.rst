@@ -90,7 +90,6 @@ In the given example, the only top-level Spellbook section is 'functions'. In th
 
 3. The sub-keys of the child node are properties of the FunctionObj. The values of those sub-keys are can be one of two things
 
-::
     a. If the value is in the value map, it is an argument to FunctionObj
 
 
