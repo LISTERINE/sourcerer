@@ -93,11 +93,12 @@ In the given example, the only top-level Spellbook section is 'functions'. In th
 
 The Syntax Map schema should consist of:
 ----------------------------------------
-
-::
 type: The class name to instantiate
+
 key: what the key for the node represents
+
 value_map: map properties to arguments to the class
+
 children: values that should be instantiated and placed into the current nodes child scope
 
 
