@@ -79,7 +79,7 @@ Building a Syntax Map for a Spellbook:
 --------------------------------------
 Your Syntax Maps top-level keys define what your Spellbook top-level sections are containing. The values of your Syntax Map top-level keys are dictionaries defining how to handle the contents of your Spellbook sections.
 
-In the given example, the only top-level Spellbook section is 'functions'. In the Syntax Map, the 'functions' key's value says several things:
+In the given example, the only top-level Spellbook section is 'functions'. In the Syntax Map, the 'functions' key's value says several things
 
 
 1. For each child node encountered, create a new FunctionObj (defined by 'type')
