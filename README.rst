@@ -76,7 +76,7 @@ Example Syntax Map to parse this Spellbook:
     }
 
 Building a Syntax Map for a Spellbook:
---------------------------------------
+""""""""""""""""""""""""""""""""""""""
 Your Syntax Maps top-level keys define what your Spellbook top-level sections are containing. The values of your Syntax Map top-level keys are dictionaries defining how to handle the contents of your Spellbook sections.
 
 In the given example, the only top-level Spellbook section is 'functions'. In the Syntax Map, the 'functions' key's value says several things:
@@ -92,13 +92,10 @@ In the given example, the only top-level Spellbook section is 'functions'. In th
    2. If the value is in the children map, it should be placed into the scope of the FunctionObj. The value will be looked up in the Syntax Map top-level to see if it can be be instantiated into a new sourcerer object.
 
 The Syntax Map schema should consist of:
-----------------------------------------
+""""""""""""""""""""""""""""""""""""""""
 type: The class name to instantiate
-
 key: what the key for the node represents
-
 value_map: map properties to arguments to the class
-
 children: values that should be instantiated and placed into the current nodes child scope
 
 
