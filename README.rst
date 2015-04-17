@@ -78,7 +78,7 @@ Example Syntax Map to parse this Spellbook:
 
     # With inline comments
     {"functions": {'type': FunctionObj, # Each top level entry under functions is a FunctionObj
-                   'key': 'name', # The key for its parameter dict is its name argument
+                   'key': 'name', # The functions key (func1) is the value to the name argument for FunctionObj
                    'value_map': {'args': 'arg_names',  # Define what args are called in the markups schema
                                  'kwargs': 'kwarg_pairs',
                                  'varargs': 'varargs',
@@ -108,14 +108,26 @@ In the given example, the only top-level Spellbook section is 'functions'. In th
 
 The Syntax Map schema should consist of:
 ****************************************
-* type: The class name to instantiate
+* type (required): The class name to instantiate
 
-* key: what the key for the node represents
+* key (required): what the key for the node represents
 
-* value_map: map properties to arguments to the class
+* value_map (required): map properties to arguments to the class
 
 * children: values that should be instantiated and placed into the current nodes child scope
 
+
+Using a Syntax Map and Spellbook to generate your source:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Based on the example Syntax Map and the Example YAML, the following will write the resulting source code to stardard out
+
+.. code-block:: python
+
+    from sourcerer.parser import YAMLProcessor
+
+    gen = YAMLProcessor()
+    gen.load('sample_data/sample.yml')
+    gen.output()
 
 
 

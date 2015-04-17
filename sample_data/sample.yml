@@ -1,0 +1,9 @@
+functions:
+    func1:
+        args: ['thing1', 'thing2']
+        kwargs: {"key1": "val1"}
+        varargs: false
+        keywords: false
+        ret:
+            value:
+                true
