@@ -1,6 +1,20 @@
 from base import Statement, to_statement
 from pdb import set_trace
 
+class NameObj(Statement):
+    """ A variable name 
+    
+    n = NameObj("helloworld") -> (unquoted) helloworld
+    """
+    pass
+
+
+class StringObj(Statement):
+    """ A quoted string
+
+    s = StringObj("hello world") -> literal 'hello world'
+    """
+    pass
 
 class ReturnObj(Statement):
     """ Terminate a function """

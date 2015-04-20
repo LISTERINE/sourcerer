@@ -52,7 +52,6 @@ class DefaultProcessor(object):
                 args, children = self.extract_parameters(object_type,
                                                          object_id,
                                                          object_parameters)
-                set_trace()
                 if self.syntax[object_type]['key'] is not None:
                     args.update({self.syntax[object_type]['key']:object_id})
                 code_obj = code_obj_class(**args)

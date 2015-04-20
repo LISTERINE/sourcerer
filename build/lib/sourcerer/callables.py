@@ -28,43 +28,11 @@ class FunctionObj(Statement):
         """
         super(FunctionObj, self).__init__(*args, **kwargs)
         self.name = name
-        self.arg_names = arg_names
-        self.kwarg_pairs = kwarg_pairs
-        self.varargs = varargs
-        self.keywords = keywords
+        self.arg_names = arg_names if arg_names else []
+        self.kwarg_pairs = kwarg_pairs if kwarg_pairs else {}
+        self.varargs = varargs if varargs else None
+        self.keywords = keywords if keywords else None
         self.header = "def {}{}:"
-
-    @property
-    def arg_names(self):
-        return self._arg_names
-
-    @arg_names.setter
-    def arg_names(self, value):
-        self._arg_names = value if value else []
-
-    @property
-    def kwarg_pairs(self):
-        return self._kwarg_pairs
-
-    @kwarg_pairs.setter
-    def kwarg_pairs(self, value):
-        self._kwarg_pairs = value if value else {}
-
-    @property
-    def varargs(self):
-        return self._varargs
-
-    @varargs.setter
-    def varargs(self, value):
-        self._varargs = value if value else None
-
-    @property
-    def keywords(self):
-        return self._keywords
-
-    @keywords.setter
-    def keywords(self, value):
-        self._keywords = value if value else None
 
     @property
     def arg_spec(self):
@@ -72,11 +40,11 @@ class FunctionObj(Statement):
 
     def build_args_kwargs(self):
         """ Build the argspec for the function """
-        args = self._arg_names + self._kwarg_pairs.keys()
-        kwargs = self._kwarg_pairs.values()
+        args = self.arg_names + self.kwarg_pairs.keys()
+        kwargs = self.kwarg_pairs.values()
         spec = inspect.ArgSpec(args=args,
-                               varargs=self._varargs,
-                               keywords=self._keywords,
+                               varargs=self.varargs,
+                               keywords=self.keywords,
                                defaults=kwargs)
         return inspect.formatargspec(*spec)
 
@@ -118,15 +86,6 @@ class CallerObj(FunctionObj):
         self.varargs = varargs
         self.keywords = keywords
         self.header = "{}{}{}{}"
-
-    @property
-    def caller_list(self):
-        return self._caller_list
-
-    @caller_list.setter
-    def caller_list(self, value):
-        self._caller_list = value if value else []
-
 
     def generate(self):
         """ Set up the args and caller list for this object """

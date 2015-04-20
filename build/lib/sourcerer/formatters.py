@@ -1,4 +1,5 @@
-from string import maketrans, punctuation
+from string import maketrans, punctuation, whitespace
+from inspect import getmembers
 from traceback import format_exc
 
 
@@ -32,10 +33,24 @@ class Formatter(object):
                 print syntax_obj, '->', prop_name
 
 
-class CallableFormatter(Formatter):
+class NameFormatter(Formatter):
+    """ Base Formatter for object names like variables/functions/classes """
+
+    @classmethod
+    def code(cls, property):
+        if property:
+            filter = maketrans(whitespace, ''.join(['_' for x in whitespace]))
+            property = property.translate(filter)
+        return property
+
+
+class CallableFormatter(NameFormatter):
+    """ This formatter should be used on callable objects like decorators and fuctions """
+
     @classmethod
     def name(cls, property):
         """ Replace all punctuation in a callables name with underscores """
+        property = super(CallableFormatter, cls).code(property)
         filter = maketrans(punctuation, ''.join(['_' for x in punctuation]))
         return property.translate(filter)
 
@@ -48,3 +63,20 @@ class CallableFormatter(Formatter):
     def kwarg_pairs(cls, property):
         """ Abstract function for formatting keyword arguments """
         return property
+
+
+class ExecutionFormatter(CallableFormatter):
+    """ The formatter that should be used when calling functions """
+
+    @classmethod
+    def arg_names(cls, property):
+        """ Quote data in positional arguments so that it will be passed into a call """
+        return property
+
+class QuotedFormatter(Formatter):
+    """ Quotes the objects code in 'single quotes' """
+
+    @classmethod
+    def code(cls, property):
+        return "'"+property+"'"
+

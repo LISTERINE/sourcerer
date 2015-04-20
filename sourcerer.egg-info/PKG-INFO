@@ -116,14 +116,26 @@ Description: ===============================
         
         The Syntax Map schema should consist of:
         ****************************************
-        * type: The class name to instantiate
+        * type (required): The class name to instantiate
         
-        * key: what the key for the node represents
+        * key (required): what the key for the node represents
         
-        * value_map: map properties to arguments to the class
+        * value_map (required): map properties to arguments to the class
         
         * children: values that should be instantiated and placed into the current nodes child scope
         
+        
+        Using a Syntax Map and Spellbook to generate your source:
+        """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+        Based on the example Syntax Map and the Example YAML, the following will write the resulting source code to stardard out
+        
+        .. code-block:: python
+        
+            from sourcerer.parser import YAMLProcessor
+        
+            gen = YAMLProcessor()
+            gen.load('sample_data/sample.yml')
+            gen.output()
         
         
         
