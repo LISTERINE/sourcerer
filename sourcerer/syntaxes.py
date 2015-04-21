@@ -1,5 +1,5 @@
 from sourcerer.callables import FunctionObj, DecoratorObj
-from sourcerer.simple_statements import ReturnObj, Docstring
+from sourcerer.simple_statements import Return, Docstring
 
 
 base_syntax = {"functions": {'type': FunctionObj,
@@ -9,7 +9,7 @@ base_syntax = {"functions": {'type': FunctionObj,
                                            'varargs': 'varargs',
                                            'keywords': 'keywords'},
                               'children':{'ret':'return'}},
-  "return": {'type': ReturnObj,
+  "return": {'type': Return,
              'key': None,
              'value_map': {'value':'val'}}
  }

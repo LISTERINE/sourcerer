@@ -1,33 +1,42 @@
-from base import Statement, to_statement
+from base import Statement
+from formatters import Formatter
 from pdb import set_trace
 
-class NameObj(Statement):
-    """ A variable name 
+class Name(Statement):
+    """ A variable/function/class/... name 
     
-    n = NameObj("helloworld") -> (unquoted) helloworld
+    n = Name("helloworld") -> (unquoted) helloworld
     """
     pass
 
 
-class StringObj(Statement):
+class Str(Statement):
     """ A quoted string
 
-    s = StringObj("hello world") -> literal 'hello world'
+    s = Str("hello world") -> literal 'hello world'
     """
     pass
 
-class ReturnObj(Statement):
+class Num(Statement):
+    """ A number """
+
+    def __init__(self, n, *args, **kwargs):
+
+        super(Num, self).__init__(*args, **kwargs)
+        self.code = n
+
+class Return(Statement):
     """ Terminate a function """
 
-    def __init__(self, _type='return', val=None, *args, **kwargs):
+    def __init__(self, val=None, _type='return', *args, **kwargs):
         """
         Args:
             _type (str): type of terminator. Should be one of: return, pass, '' (or None)
             val (Statement): The Statement that is to be returned
         """
-        super(ReturnObj, self).__init__(*args, **kwargs)
+        super(Return, self).__init__(*args, **kwargs)
         self._type = _type if _type is not None else ''
-        self.val = to_statement(val)
+        self.val = Statement.to_statement(val)
         self.line_ending = ''
 
     def generate(self):

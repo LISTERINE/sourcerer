@@ -1,5 +1,5 @@
-from sourcerer.base import Document
-from sourcerer.simple_statements import ReturnObj, Docstring
+from sourcerer.modules import Document
+from sourcerer.simple_statements import Return, Docstring
 from sourcerer.callables import FunctionObj, DecoratorObj
 from sourcerer.syntaxes import base_syntax, yaml_syntax
 from sys import stdout, argv
@@ -7,8 +7,8 @@ import yaml
 from pdb import set_trace
 """
 r = RouteFunctionObj(name="test_route")
-ret = ReturnObj
-ret = ReturnObj()
+ret = Return
+ret = Return()
 dec = RouteDecoratorObj(name="route", arg_names=["/products"])
 
 doc = Document()

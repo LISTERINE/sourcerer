@@ -57,9 +57,10 @@
 <dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
 <p>All content is rooted in this base document</p>
 <dl class="method">
-<dt id="sourcerer.base.Document.export">
-<code class="descname">export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Document.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Document.export" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="sourcerer.base.Document.output">
+<code class="descname">output</code><span class="sig-paren">(</span><em>output_file_name=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/base.html#Document.output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.base.Document.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out the syntax tree</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -218,6 +219,11 @@ result will look like &#8216;&#64;fn(...)&#8217;</p>
 <em class="property">class </em><code class="descclassname">sourcerer.callables.</code><code class="descname">FunctionObj</code><span class="sig-paren">(</span><em>name=''</em>, <em>arg_names=None</em>, <em>kwarg_pairs=None</em>, <em>varargs=False</em>, <em>keywords=False</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#FunctionObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.FunctionObj" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
 <p>The base of callable objects</p>
+<dl class="attribute">
+<dt id="sourcerer.callables.FunctionObj.arg_spec">
+<code class="descname">arg_spec</code><a class="headerlink" href="#sourcerer.callables.FunctionObj.arg_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="sourcerer.callables.FunctionObj.build_args_kwargs">
 <code class="descname">build_args_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#FunctionObj.build_args_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.FunctionObj.build_args_kwargs" title="Permalink to this definition">¶</a></dt>
@@ -258,7 +264,8 @@ argument, rather than part of the arg spec.</p>
 <dl class="class">
 <dt id="sourcerer.formatters.CallableFormatter">
 <em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">CallableFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.Formatter" title="sourcerer.formatters.Formatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.Formatter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.NameFormatter" title="sourcerer.formatters.NameFormatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.NameFormatter</span></code></a></p>
+<p>This formatter should be used on callable objects like decorators and fuctions</p>
 <dl class="classmethod">
 <dt id="sourcerer.formatters.CallableFormatter.arg_names">
 <em class="property">classmethod </em><code class="descname">arg_names</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter.arg_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter.arg_names" title="Permalink to this definition">¶</a></dt>
@@ -275,6 +282,19 @@ argument, rather than part of the arg spec.</p>
 <dt id="sourcerer.formatters.CallableFormatter.name">
 <em class="property">classmethod </em><code class="descname">name</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace all punctuation in a callables name with underscores</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.formatters.ExecutionFormatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">ExecutionFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#ExecutionFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.ExecutionFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.CallableFormatter" title="sourcerer.formatters.CallableFormatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.CallableFormatter</span></code></a></p>
+<p>The formatter that should be used when calling functions</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.ExecutionFormatter.arg_names">
+<em class="property">classmethod </em><code class="descname">arg_names</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#ExecutionFormatter.arg_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.ExecutionFormatter.arg_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quote data in positional arguments so that it will be passed into a call</p>
 </dd></dl>
 
 </dd></dl>
@@ -300,9 +320,81 @@ has the same name as a formatter.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="sourcerer.formatters.NameFormatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">NameFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#NameFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.NameFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.Formatter" title="sourcerer.formatters.Formatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.Formatter</span></code></a></p>
+<p>Base Formatter for object names like variables/functions/classes</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.NameFormatter.code">
+<em class="property">classmethod </em><code class="descname">code</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#NameFormatter.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.NameFormatter.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.formatters.QuotedFormatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">QuotedFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#QuotedFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.QuotedFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.Formatter" title="sourcerer.formatters.Formatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.Formatter</span></code></a></p>
+<p>Quotes the objects code in &#8216;single quotes&#8217;</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.QuotedFormatter.code">
+<em class="property">classmethod </em><code class="descname">code</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#QuotedFormatter.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.QuotedFormatter.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="sourcerer-parser-module">
-<h2>sourcerer.parser module<a class="headerlink" href="#sourcerer-parser-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-sourcerer.parser">
+<span id="sourcerer-parser-module"></span><h2>sourcerer.parser module<a class="headerlink" href="#module-sourcerer.parser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="sourcerer.parser.DefaultProcessor">
+<em class="property">class </em><code class="descclassname">sourcerer.parser.</code><code class="descname">DefaultProcessor</code><span class="sig-paren">(</span><em>parser=None</em>, <em>syntax={'functions': {'type': &lt;class 'sourcerer.callables.FunctionObj'&gt;</em>, <em>'value_map': {'keywords': 'keywords'</em>, <em>'args': 'arg_names'</em>, <em>'varargs': 'varargs'</em>, <em>'kwargs': 'kwarg_pairs'}</em>, <em>'key': 'name'</em>, <em>'children': {'ret': 'return'}}</em>, <em>'return': {'type': &lt;class 'sourcerer.simple_statements.ReturnObj'&gt;</em>, <em>'value_map': {'value': 'val'}</em>, <em>'key': None}}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/parser.html#DefaultProcessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.parser.DefaultProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="sourcerer.parser.DefaultProcessor.assemble">
+<code class="descname">assemble</code><span class="sig-paren">(</span><em>object_type</em>, <em>parsed_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/parser.html#DefaultProcessor.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.parser.DefaultProcessor.assemble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process all the nodes in a parsed input document</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.parser.DefaultProcessor.extract_parameters">
+<code class="descname">extract_parameters</code><span class="sig-paren">(</span><em>obj_type</em>, <em>obj_id</em>, <em>parameters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/parser.html#DefaultProcessor.extract_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.parser.DefaultProcessor.extract_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract data about code object arguments and children</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>obj_type (str): The type of object to get data from
+obj_id (str): The key that identified this object in its parent dict
+parameters (dict): The dictionary of properties of the code object to be created</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.parser.DefaultProcessor.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>file_name=None</em>, <em>doc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/parser.html#DefaultProcessor.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.parser.DefaultProcessor.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a specification file into a deserialized format</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>file_name (str): The name of the spec file to load as a string
+doc (Document): A pre-built Document</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.parser.DefaultProcessor.output">
+<code class="descname">output</code><span class="sig-paren">(</span><em>output_file_name=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/parser.html#DefaultProcessor.output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.parser.DefaultProcessor.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out the syntax tree</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.parser.YAMLProcessor">
+<em class="property">class </em><code class="descclassname">sourcerer.parser.</code><code class="descname">YAMLProcessor</code><span class="sig-paren">(</span><em>syntax={'functions': {'type': &lt;class 'sourcerer.callables.FunctionObj'&gt;</em>, <em>'value_map': {'keywords': 'keywords'</em>, <em>'args': 'arg_names'</em>, <em>'varargs': 'varargs'</em>, <em>'kwargs': 'kwarg_pairs'}</em>, <em>'key': 'name'</em>, <em>'children': {'ret': 'return'}}</em>, <em>'return': {'type': &lt;class 'sourcerer.simple_statements.ReturnObj'&gt;</em>, <em>'value_map': {'value': 'val'}</em>, <em>'key': None}}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/parser.html#YAMLProcessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.parser.YAMLProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.parser.DefaultProcessor" title="sourcerer.parser.DefaultProcessor"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.parser.DefaultProcessor</span></code></a></p>
+<p>A processor that builds a Document from a YAML file</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-sourcerer.simple_statements">
 <span id="sourcerer-simple-statements-module"></span><h2>sourcerer.simple_statements module<a class="headerlink" href="#module-sourcerer.simple_statements" title="Permalink to this headline">¶</a></h2>
@@ -318,6 +410,14 @@ has the same name as a formatter.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="sourcerer.simple_statements.NameObj">
+<em class="property">class </em><code class="descclassname">sourcerer.simple_statements.</code><code class="descname">NameObj</code><span class="sig-paren">(</span><em>code=''</em>, <em>scope=None</em>, <em>whitespace=''</em>, <em>line_ending='n'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/simple_statements.html#NameObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.simple_statements.NameObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
+<p>A variable name</p>
+<p>n = NameObj(&#8220;helloworld&#8221;) -&gt; (unquoted) helloworld</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="sourcerer.simple_statements.ReturnObj">
 <em class="property">class </em><code class="descclassname">sourcerer.simple_statements.</code><code class="descname">ReturnObj</code><span class="sig-paren">(</span><em>_type='return'</em>, <em>val=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/simple_statements.html#ReturnObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.simple_statements.ReturnObj" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
@@ -329,6 +429,17 @@ has the same name as a formatter.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="sourcerer.simple_statements.StringObj">
+<em class="property">class </em><code class="descclassname">sourcerer.simple_statements.</code><code class="descname">StringObj</code><span class="sig-paren">(</span><em>code=''</em>, <em>scope=None</em>, <em>whitespace=''</em>, <em>line_ending='n'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/simple_statements.html#StringObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.simple_statements.StringObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.base.Statement" title="sourcerer.base.Statement"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.base.Statement</span></code></a></p>
+<p>A quoted string</p>
+<p>s = StringObj(&#8220;hello world&#8221;) -&gt; literal &#8216;hello world&#8217;</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sourcerer.syntaxes">
+<span id="sourcerer-syntaxes-module"></span><h2>sourcerer.syntaxes module<a class="headerlink" href="#module-sourcerer.syntaxes" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-sourcerer">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-sourcerer" title="Permalink to this headline">¶</a></h2>
@@ -349,8 +460,9 @@ has the same name as a formatter.</p>
 <li><a class="reference internal" href="#module-sourcerer.callables">sourcerer.callables module</a></li>
 <li><a class="reference internal" href="#sourcerer-engine-module">sourcerer.engine module</a></li>
 <li><a class="reference internal" href="#module-sourcerer.formatters">sourcerer.formatters module</a></li>
-<li><a class="reference internal" href="#sourcerer-parser-module">sourcerer.parser module</a></li>
+<li><a class="reference internal" href="#module-sourcerer.parser">sourcerer.parser module</a></li>
 <li><a class="reference internal" href="#module-sourcerer.simple_statements">sourcerer.simple_statements module</a></li>
+<li><a class="reference internal" href="#module-sourcerer.syntaxes">sourcerer.syntaxes module</a></li>
 <li><a class="reference internal" href="#module-sourcerer">Module contents</a></li>
 </ul>
 </li>

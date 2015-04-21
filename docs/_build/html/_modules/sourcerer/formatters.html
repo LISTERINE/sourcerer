@@ -47,7 +47,8 @@
           <div class="body" role="main">
             
   <h1>Source code for sourcerer.formatters</h1><div class="highlight"><pre>
-<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">maketrans</span><span class="p">,</span> <span class="n">punctuation</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">maketrans</span><span class="p">,</span> <span class="n">punctuation</span><span class="p">,</span> <span class="n">whitespace</span>
+<span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">getmembers</span>
 <span class="kn">from</span> <span class="nn">traceback</span> <span class="kn">import</span> <span class="n">format_exc</span>
 
 
@@ -81,10 +82,24 @@
                 <span class="k">print</span> <span class="n">syntax_obj</span><span class="p">,</span> <span class="s">&#39;-&gt;&#39;</span><span class="p">,</span> <span class="n">prop_name</span>
 
 </div></div>
-<div class="viewcode-block" id="CallableFormatter"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.CallableFormatter">[docs]</a><span class="k">class</span> <span class="nc">CallableFormatter</span><span class="p">(</span><span class="n">Formatter</span><span class="p">):</span>
+<div class="viewcode-block" id="NameFormatter"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.NameFormatter">[docs]</a><span class="k">class</span> <span class="nc">NameFormatter</span><span class="p">(</span><span class="n">Formatter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base Formatter for object names like variables/functions/classes &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="NameFormatter.code"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.NameFormatter.code">[docs]</a>    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">property</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">property</span><span class="p">:</span>
+            <span class="nb">filter</span> <span class="o">=</span> <span class="n">maketrans</span><span class="p">(</span><span class="n">whitespace</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;_&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">whitespace</span><span class="p">]))</span>
+            <span class="nb">property</span> <span class="o">=</span> <span class="nb">property</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">property</span>
+
+</div></div>
+<div class="viewcode-block" id="CallableFormatter"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.CallableFormatter">[docs]</a><span class="k">class</span> <span class="nc">CallableFormatter</span><span class="p">(</span><span class="n">NameFormatter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This formatter should be used on callable objects like decorators and fuctions &quot;&quot;&quot;</span>
+
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="CallableFormatter.name"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.CallableFormatter.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">property</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Replace all punctuation in a callables name with underscores &quot;&quot;&quot;</span>
+        <span class="nb">property</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CallableFormatter</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">code</span><span class="p">(</span><span class="nb">property</span><span class="p">)</span>
         <span class="nb">filter</span> <span class="o">=</span> <span class="n">maketrans</span><span class="p">(</span><span class="n">punctuation</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;_&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">punctuation</span><span class="p">]))</span>
         <span class="k">return</span> <span class="nb">property</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
 </div>
@@ -96,8 +111,24 @@
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="CallableFormatter.kwarg_pairs"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.CallableFormatter.kwarg_pairs">[docs]</a>    <span class="k">def</span> <span class="nf">kwarg_pairs</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">property</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Abstract function for formatting keyword arguments &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">property</span></div></div>
-</pre></div>
+        <span class="k">return</span> <span class="nb">property</span>
+
+</div></div>
+<div class="viewcode-block" id="ExecutionFormatter"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.ExecutionFormatter">[docs]</a><span class="k">class</span> <span class="nc">ExecutionFormatter</span><span class="p">(</span><span class="n">CallableFormatter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; The formatter that should be used when calling functions &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ExecutionFormatter.arg_names"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.ExecutionFormatter.arg_names">[docs]</a>    <span class="k">def</span> <span class="nf">arg_names</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">property</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Quote data in positional arguments so that it will be passed into a call &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">property</span>
+</div></div>
+<div class="viewcode-block" id="QuotedFormatter"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.QuotedFormatter">[docs]</a><span class="k">class</span> <span class="nc">QuotedFormatter</span><span class="p">(</span><span class="n">Formatter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Quotes the objects code in &#39;single quotes&#39; &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="QuotedFormatter.code"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.formatters.QuotedFormatter.code">[docs]</a>    <span class="k">def</span> <span class="nf">code</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">property</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;&#39;&quot;</span><span class="o">+</span><span class="nb">property</span><span class="o">+</span><span class="s">&quot;&#39;&quot;</span>
+</pre></div></div></div>
 
           </div>
         </div>

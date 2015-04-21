@@ -1,5 +1,4 @@
 from string import maketrans, punctuation, whitespace
-from inspect import getmembers
 from traceback import format_exc
 
 

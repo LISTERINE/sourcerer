@@ -76,6 +76,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">whitespace</span> <span class="o">=</span> <span class="n">whitespace</span> <span class="k">if</span> <span class="n">whitespace</span> <span class="k">else</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="mi">4</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line_ending</span> <span class="o">=</span> <span class="n">line_ending</span>
 
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_renderer</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">renderer</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">node</span>
+
 <div class="viewcode-block" id="Statement.add_child"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.add_child">[docs]</a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Append a child to this statements scope </span>
 <span class="sd">        </span>
@@ -182,10 +187,15 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">line_ending</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
 
-<div class="viewcode-block" id="Document.export"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Document.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">renderer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_renderer</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">renderer</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">node</span>
+<div class="viewcode-block" id="Document.output"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Document.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Write out the syntax tree &quot;&quot;&quot;</span>
+
+        <span class="n">syntax_string</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">output_file_name</span><span class="p">:</span>
+            <span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">syntax_string</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">syntax_string</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="to_statement"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.to_statement">[docs]</a><span class="k">def</span> <span class="nf">to_statement</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>

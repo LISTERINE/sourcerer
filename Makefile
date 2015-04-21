@@ -38,7 +38,7 @@ lint:
 	flake8 sourcerer tests
 
 test:
-	python setup.py test
+	py.test
 
 test-all:
 	tox

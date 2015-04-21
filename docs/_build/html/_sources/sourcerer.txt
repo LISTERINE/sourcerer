@@ -52,6 +52,14 @@ sourcerer.simple_statements module
     :undoc-members:
     :show-inheritance:
 
+sourcerer.syntaxes module
+-------------------------
+
+.. automodule:: sourcerer.syntaxes
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

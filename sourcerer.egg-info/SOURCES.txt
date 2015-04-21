@@ -23,6 +23,7 @@ sourcerer/base.py
 sourcerer/callables.py
 sourcerer/engine.py
 sourcerer/formatters.py
+sourcerer/modules.py
 sourcerer/parser.py
 sourcerer/simple_statements.py
 sourcerer/syntaxes.py
@@ -32,5 +33,4 @@ sourcerer.egg-info/dependency_links.txt
 sourcerer.egg-info/not-zip-safe
 sourcerer.egg-info/top_level.txt
 tests/__init__.py
-tests/processor_test.py
 tests/test_sourcerer.py

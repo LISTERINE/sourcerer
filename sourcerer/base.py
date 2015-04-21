@@ -130,30 +130,20 @@ class Statement(object):
                 except StopIteration:
                     break
 
+    @staticmethod
+    def to_statement(item):
+        """ Convert a string to a Statement
 
-class Document(Statement):
-    """ All content is rooted in this base document """
+        If the argument passed is already a Statement, return it unaltered
+        If the argument passed is a Non-string or statement, return an empty Statement
 
-    def __init__(self, *args, **kwargs):
-        super(Document, self).__init__(*args, **kwargs)
-        self.line_ending = ''
-
-    def output(self, output_file_name=''):
-        """ Write out the syntax tree """
-
-        syntax_string = ''.join(self)
-        if not output_file_name:
-            stdout.write(syntax_string)
+        Args:
+            item (str, Statement): The object to be converted to a Statement
+        """
+        if isinstance(item, basestring):
+            val = Statement(item)
+        elif isinstance(item, Statement):
+            pass
         else:
-            with open(output_file_name, 'w') as output:
-                output.write(syntax_string)
-
-
-def to_statement(item):
-    if isinstance(item, basestring):
-        val = Statement(item)
-    elif isinstance(item, Statement):
-        pass
-    else:
-        item = Statement()
-    return item
+            item = Statement()
+        return item

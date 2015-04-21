@@ -1,5 +1,5 @@
+from base import Statement
 from string import maketrans, punctuation, whitespace
-from inspect import getmembers
 from traceback import format_exc
 
 
@@ -32,6 +32,15 @@ class Formatter(object):
                 print e
                 print syntax_obj, '->', prop_name
 
+    @staticmethod
+    def to_statement(item):
+        if isinstance(item, basestring):
+            val = Statement(item)
+        elif isinstance(item, Statement):
+            pass
+        else:
+            item = Statement()
+        return item
 
 class NameFormatter(Formatter):
     """ Base Formatter for object names like variables/functions/classes """
