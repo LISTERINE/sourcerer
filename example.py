@@ -1,10 +1,8 @@
 from yaml import load
-from sourcerer.modules import Document
-from sourcerer.callables import FunctionDef, DecoratorDef
-from sourcerer.simple_statements import Return
+from sourcerer import Document, FunctionDef, DecoratorDef, Return
 from sys import argv
 
-# Create a docuemnt to put our code in
+# Create a document to put our code in
 doc = Document()
 
 # Open our yml file and read it in

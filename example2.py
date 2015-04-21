@@ -1,4 +1,4 @@
-from sourcerer.parser import YAMLProcessor
+from sourcerer import YAMLProcessor
 
 gen = YAMLProcessor()
 gen.load('sample_data/sample.yml')

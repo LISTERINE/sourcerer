@@ -79,17 +79,20 @@ class Call(FunctionDef):
     def __init__(self, caller_list=None, *args, **kwargs):
         """
         Args:
-            caller_list (list): The list of predecessor CallerObjects ex. [C1,f1,f2] = C1.f1().f2().self()
+            caller_list (list): The list of predecessor Call/Name Objects ex. [C1,f1,f2] = C1.f1().f2().self()
         """
         super(Call, self).__init__(*args, **kwargs)
         self.caller_list = caller_list if caller_list else []
         self.header = "{}{}{}{}"
-        raise NotImplementedError
 
     def generate(self):
         """ Set up the args and caller list for this object """
-        callers = '.'.join(self.caller_list)
-        self.code = self.header.format(callers, self.name,
+        for call in self.caller_list:
+            call.generate()
+        callers = '.'.join([str(call) for call in self.caller_list])
+        self.code = self.header.format(callers,
+                                       '.' if callers else '',
+                                       self.name,
                                        self.arg_spec)
 
     def format(self):

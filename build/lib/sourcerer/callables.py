@@ -87,8 +87,12 @@ class Call(FunctionDef):
 
     def generate(self):
         """ Set up the args and caller list for this object """
-        callers = '.'.join(self.caller_list)
-        self.code = self.header.format(callers, self.name,
+        for call in self.caller_list:
+            call.generate()
+        callers = '.'.join([str(call) for call in self.caller_list])
+        self.code = self.header.format(callers,
+                                       '.' if callers else '',
+                                       self.name,
                                        self.arg_spec)
 
     def format(self):

@@ -1,7 +1,4 @@
-from sourcerer.modules import Document
-from sourcerer.simple_statements import Return, Docstring
-from sourcerer.callables import FunctionDef, DecoratorDef
-from sourcerer.syntaxes import base_syntax, yaml_syntax
+from sourcerer import Document, base_syntax, yaml_syntax
 from sys import stdout, argv
 import yaml
 from pdb import set_trace

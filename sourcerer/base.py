@@ -1,6 +1,5 @@
 #!env/bin/python
 from pdb import set_trace
-from formatters import Formatter
 import re
 from sys import stdout
 
