@@ -2,28 +2,6 @@ from base import Statement
 from formatters import Formatter
 from pdb import set_trace
 
-class Name(Statement):
-    """ A variable/function/class/... name 
-    
-    n = Name("helloworld") -> (unquoted) helloworld
-    """
-    pass
-
-
-class Str(Statement):
-    """ A quoted string
-
-    s = Str("hello world") -> literal 'hello world'
-    """
-    pass
-
-class Num(Statement):
-    """ A number """
-
-    def __init__(self, n, *args, **kwargs):
-
-        super(Num, self).__init__(*args, **kwargs)
-        self.code = n
 
 class Return(Statement):
     """ Terminate a function """
@@ -36,7 +14,7 @@ class Return(Statement):
         """
         super(Return, self).__init__(*args, **kwargs)
         self._type = _type if _type is not None else ''
-        self.val = Formatter.to_statement(val)
+        self.val = Statement.to_statement(val)
         self.line_ending = ''
 
     def generate(self):

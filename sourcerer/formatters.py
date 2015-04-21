@@ -64,13 +64,14 @@ class CallableFormatter(NameFormatter):
         return property
 
 
-class ExecutionFormatter(CallableFormatter):
+class CallFormatter(CallableFormatter):
     """ The formatter that should be used when calling functions """
 
     @classmethod
     def arg_names(cls, property):
         """ Quote data in positional arguments so that it will be passed into a call """
         return property
+
 
 class QuotedFormatter(Formatter):
     """ Quotes the objects code in 'single quotes' """

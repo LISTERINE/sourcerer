@@ -1,20 +1,12 @@
 from sourcerer.modules import Document
 from sourcerer.simple_statements import Return, Docstring
-from sourcerer.callables import FunctionObj, DecoratorObj
+from sourcerer.callables import FunctionDef, DecoratorDef
 from sourcerer.syntaxes import base_syntax, yaml_syntax
 from sys import stdout, argv
 import yaml
 from pdb import set_trace
-"""
-r = RouteFunctionObj(name="test_route")
-ret = Return
-ret = Return()
-dec = RouteDecoratorObj(name="route", arg_names=["/products"])
 
-doc = Document()
-doc.add_children(route([dec], r, ret))
-doc.export()
-"""
+
 class DefaultProcessor(object):
 
     def __init__(self, parser=None, syntax=base_syntax):

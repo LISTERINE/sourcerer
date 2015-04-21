@@ -1,4 +1,3 @@
-from base import Statement
 from string import maketrans, punctuation, whitespace
 from traceback import format_exc
 
@@ -32,15 +31,6 @@ class Formatter(object):
                 print e
                 print syntax_obj, '->', prop_name
 
-    @staticmethod
-    def to_statement(item):
-        if isinstance(item, basestring):
-            val = Statement(item)
-        elif isinstance(item, Statement):
-            pass
-        else:
-            item = Statement()
-        return item
 
 class NameFormatter(Formatter):
     """ Base Formatter for object names like variables/functions/classes """
@@ -74,13 +64,14 @@ class CallableFormatter(NameFormatter):
         return property
 
 
-class ExecutionFormatter(CallableFormatter):
+class CallFormatter(CallableFormatter):
     """ The formatter that should be used when calling functions """
 
     @classmethod
     def arg_names(cls, property):
         """ Quote data in positional arguments so that it will be passed into a call """
         return property
+
 
 class QuotedFormatter(Formatter):
     """ Quotes the objects code in 'single quotes' """

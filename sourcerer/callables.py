@@ -1,13 +1,13 @@
 #!env/bin/python
 
 from base import Statement
-from formatters import CallableFormatter
+from formatters import CallableFormatter, CallFormatter
 import inspect
 from string import punctuation, maketrans
 from pdb import set_trace
 
 
-class FunctionObj(Statement):
+class FunctionDef(Statement):
     """The base of callable objects
 
     """
@@ -26,7 +26,7 @@ class FunctionObj(Statement):
             varargs (bool): Should the argument list contain *args
             keywords (bool): Should the argument list contain **kwargs
         """
-        super(FunctionObj, self).__init__(*args, **kwargs)
+        super(FunctionDef, self).__init__(*args, **kwargs)
         self.name = name
         self.arg_names = arg_names if arg_names else []
         self.kwarg_pairs = kwarg_pairs if kwarg_pairs else {}
@@ -59,13 +59,13 @@ class FunctionObj(Statement):
         CallableFormatter.apply(self)
 
 
-class DecoratorObj(FunctionObj):
+class DecoratorDef(FunctionDef):
     """ Sets the @ on the header.
     result will look like '@fn(...)'
     """
 
     def __init__(self, *args, **kwargs):
-        super(DecoratorObj, self).__init__(*args, **kwargs)
+        super(DecoratorDef, self).__init__(*args, **kwargs)
         self.header = "@{}{}"
 
     def build_renderer(self, *args, **kwargs):
@@ -73,36 +73,24 @@ class DecoratorObj(FunctionObj):
         return self.render(*args, **kwargs)
 
 
-class CallerObj(FunctionObj):
-    """ Used to call functions or instatntiate Classes """
+class Call(FunctionDef):
+    """ Used to call functions or instantiate Classes """
 
     def __init__(self, caller_list=None, *args, **kwargs):
         """
         Args:
             caller_list (list): The list of predecessor CallerObjects ex. [C1,f1,f2] = C1.f1().f2().self()
         """
-        super(Caller, self).__init__(*args, **kwargs)
+        super(Call, self).__init__(*args, **kwargs)
         self.caller_list = caller_list if caller_list else []
-        self.varargs = varargs
-        self.keywords = keywords
         self.header = "{}{}{}{}"
+        raise NotImplementedError
 
     def generate(self):
         """ Set up the args and caller list for this object """
-        self.code = self.header.format(self.caller_list, self.name,
+        callers = '.'.join(self.caller_list)
+        self.code = self.header.format(callers, self.name,
                                        self.arg_spec)
 
     def format(self):
-        CallerFormatter.apply(self)
-
-
-def string_args(args):
-    """ Enclose your positional arguments in strings so it can be used as an 
-    argument, rather than part of the arg spec.
-
-    Args:
-        args (list/string): A string/list of strings to be quoted
-    """
-    if isinstance(args, basestring):
-        return '"{}"'.format(args)
-    return ['"{}"'.format(arg) for arg in args]
+        CallFormatter.apply(self)

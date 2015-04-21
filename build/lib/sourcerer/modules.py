@@ -6,7 +6,10 @@ from pdb import set_trace
 
 
 class Document(Statement):
-    """ All content is rooted in this base document """
+    """ All content is rooted in this base document
+
+    All a document really is, is a statement with a blank line ending and an output method.
+    """
 
     def __init__(self, *args, **kwargs):
         super(Document, self).__init__(*args, **kwargs)

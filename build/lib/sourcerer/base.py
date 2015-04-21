@@ -1,6 +1,7 @@
 #!env/bin/python
 from pdb import set_trace
 from formatters import Formatter
+import re
 from sys import stdout
 
 
@@ -31,6 +32,12 @@ class Statement(object):
         renderer = self.build_renderer()
         for node in renderer:
             yield node
+
+    def __str__(self):
+        return self.code
+
+    def __repr__(self):
+        return self.code
 
     def add_child(self, child):
         """ Append a child to this statements scope 
@@ -129,3 +136,82 @@ class Statement(object):
                     yield child_renderer.next()
                 except StopIteration:
                     break
+
+    @staticmethod
+    def to_statement(item):
+        """ Convert a string to a Statement
+
+        If the argument passed is already a Statement, return it unaltered
+        If the argument passed is a Non-string or statement, return an empty Statement
+
+        Args:
+            item (str, Statement): The object to be converted to a Statement
+        """
+        if isinstance(item, basestring):
+            item = Statement(item)
+        elif isinstance(item, Statement):
+            pass
+        else:
+            item = Statement()
+        return item
+
+
+class Name(Statement):
+    """ A variable/function/class/... name
+
+    n = Name("helloworld") -> (unquoted) helloworld
+
+    NOTE:
+        This will reformat a name if it is not a proper python vairable name
+        n = Name("123*helloworld") -> (unquoted) helloworld
+    """
+    def __init__(self, code, *args, **kwargs):
+        super(Name, self).__init__(*args, **kwargs)
+        self.code = self.make_valid(code)
+
+    @staticmethod
+    def make_valid(name):
+        """ Convert a string to a valid python name
+
+        Args:
+            name (string): The name to be converted
+        """
+        name = re.sub('[^0-9a-zA-Z_]', '', name)  # Remove invalid characters
+        name = re.sub('^[^a-zA-Z_]+', '', name)   # Remove leading characters until we find a letter or underscore
+        return name
+
+
+class Str(Statement):
+    """ A quoted string
+
+    s = Str("hello world") -> literal 'hello world'
+    """
+
+    def __init__(self, code, *args, **kwargs):
+        super(Str, self).__init__(*args, **kwargs)
+        self.code = self.string_args(code)
+
+    @staticmethod
+    def string_args(args):
+        """ Enclose your positional arguments in strings so it can be used as an
+        argument, rather than part of the arg spec.
+
+        Args:
+            args (list/string): A string/list of strings to be quoted
+        """
+        if isinstance(args, basestring):
+            return '"{}"'.format(args)
+        return ['"{}"'.format(arg) for arg in args]
+
+
+class Num(Statement):
+    """ A number. Int or Float.
+
+    n = Num("4") -> 4
+    n = Num(4) -> 4
+    n = Num(4.0) -> 4.0
+    """
+
+    def __init__(self, code, *args, **kwargs):
+        super(Num, self).__init__(*args, **kwargs)
+        self.code = str(code)

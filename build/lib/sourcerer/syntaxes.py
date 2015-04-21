@@ -1,8 +1,8 @@
-from sourcerer.callables import FunctionObj, DecoratorObj
+from sourcerer.callables import FunctionDef, DecoratorDef
 from sourcerer.simple_statements import Return, Docstring
 
 
-base_syntax = {"functions": {'type': FunctionObj,
+base_syntax = {"functions": {'type': FunctionDef,
                              'key': 'name',
                              'value_map': {'args': 'arg_names',
                                            'kwargs': 'kwarg_pairs',
