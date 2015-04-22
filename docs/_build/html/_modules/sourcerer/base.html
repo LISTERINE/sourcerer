@@ -49,11 +49,11 @@
   <h1>Source code for sourcerer.base</h1><div class="highlight"><pre>
 <span class="c">#!env/bin/python</span>
 <span class="kn">from</span> <span class="nn">pdb</span> <span class="kn">import</span> <span class="n">set_trace</span>
-<span class="kn">from</span> <span class="nn">formatters</span> <span class="kn">import</span> <span class="n">Formatter</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">stdout</span>
 
 
-<div class="viewcode-block" id="Statement"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement">[docs]</a><span class="k">class</span> <span class="nc">Statement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement">[docs]</a><span class="k">class</span> <span class="nc">Statement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A line of code </span>
 <span class="sd">    </span>
 <span class="sd">    A Statement is a line of code that may or may not have a child Scope</span>
@@ -81,7 +81,13 @@
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">renderer</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">node</span>
 
-<div class="viewcode-block" id="Statement.add_child"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.add_child">[docs]</a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span>
+
+<div class="viewcode-block" id="Statement.add_child"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.add_child">[docs]</a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Append a child to this statements scope </span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
@@ -92,7 +98,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;child &quot;</span> <span class="o">+</span> <span class="n">child</span> <span class="o">+</span> <span class="s">&quot; is not a Statement&quot;</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Statement.add_children"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.add_children">[docs]</a>    <span class="k">def</span> <span class="nf">add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_list</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement.add_children"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.add_children">[docs]</a>    <span class="k">def</span> <span class="nf">add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_list</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; A convenience function to load multiple children into this scope</span>
 
 <span class="sd">        Args:</span>
@@ -101,7 +107,7 @@
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">child_list</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Statement.create_lineage"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.create_lineage">[docs]</a>    <span class="k">def</span> <span class="nf">create_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineage</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement.create_lineage"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.create_lineage">[docs]</a>    <span class="k">def</span> <span class="nf">create_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineage</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a hierarchical lineage of children with this object as the oldest member. eg.</span>
 <span class="sd">        children = [c1, c2, c3]</span>
 <span class="sd">        result -- self (top level)</span>
@@ -114,7 +120,7 @@
             <span class="n">current_node</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
             <span class="n">current_node</span> <span class="o">=</span> <span class="n">child</span>
 </div>
-<div class="viewcode-block" id="Statement.from_parent"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.from_parent">[docs]</a>    <span class="k">def</span> <span class="nf">from_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement.from_parent"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.from_parent">[docs]</a>    <span class="k">def</span> <span class="nf">from_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Append this statement to a parents scope </span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
@@ -125,7 +131,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;parent &quot;</span> <span class="o">+</span> <span class="n">parent</span> <span class="o">+</span> <span class="s">&quot; is not a Statement&quot;</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Statement.from_lineage"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.from_lineage">[docs]</a>    <span class="k">def</span> <span class="nf">from_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineage</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement.from_lineage"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.from_lineage">[docs]</a>    <span class="k">def</span> <span class="nf">from_lineage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineage</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a hierarchical list of parents with this object as the youngest decentant</span>
 
 <span class="sd">        Lineage will be arranged in the order the parents are provided. eg.</span>
@@ -146,21 +152,21 @@
             <span class="n">current_node</span><span class="o">.</span><span class="n">from_parent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
             <span class="n">current_node</span> <span class="o">=</span> <span class="n">parent</span>
 </div>
-<div class="viewcode-block" id="Statement.format"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement.format"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Abstract function to format properties this object &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
-<div class="viewcode-block" id="Statement.generate"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement.generate"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Abstract function to set self.code &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
-<div class="viewcode-block" id="Statement.build_renderer"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.build_renderer">[docs]</a>    <span class="k">def</span> <span class="nf">build_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement.build_renderer"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.build_renderer">[docs]</a>    <span class="k">def</span> <span class="nf">build_renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Overwrite this function to customize how render should be called</span>
 <span class="sd">        for particular objects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Statement.render"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Statement.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Statement.render"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return this statement and all children recursively </span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
@@ -178,34 +184,87 @@
                     <span class="k">yield</span> <span class="n">child_renderer</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
                 <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
                     <span class="k">break</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Statement.to_statement"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Statement.to_statement">[docs]</a>    <span class="k">def</span> <span class="nf">to_statement</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Convert a string to a Statement</span>
 
-</div></div>
-<div class="viewcode-block" id="Document"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Document">[docs]</a><span class="k">class</span> <span class="nc">Document</span><span class="p">(</span><span class="n">Statement</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; All content is rooted in this base document &quot;&quot;&quot;</span>
+<span class="sd">        If the argument passed is already a Statement, return it unaltered</span>
+<span class="sd">        If the argument passed is a Non-string or statement, return an empty Statement</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">line_ending</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-
-<div class="viewcode-block" id="Document.output"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.Document.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write out the syntax tree &quot;&quot;&quot;</span>
-
-        <span class="n">syntax_string</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">output_file_name</span><span class="p">:</span>
-            <span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">syntax_string</span><span class="p">)</span>
+<span class="sd">        Args:</span>
+<span class="sd">            item (str, Statement): The object to be converted to a Statement</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Statement</span><span class="p">):</span>
+            <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
-                <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">syntax_string</span><span class="p">)</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">item</span>
 
 </div></div>
-<div class="viewcode-block" id="to_statement"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.base.to_statement">[docs]</a><span class="k">def</span> <span class="nf">to_statement</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Statement</span><span class="p">):</span>
-        <span class="k">pass</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">item</span> <span class="o">=</span> <span class="n">Statement</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">item</span></div>
+<div class="viewcode-block" id="Name"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Name">[docs]</a><span class="k">class</span> <span class="nc">Name</span><span class="p">(</span><span class="n">Statement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A variable/function/class/... name</span>
+
+<span class="sd">    n = Name(&quot;helloworld&quot;) -&gt; (unquoted) helloworld</span>
+
+<span class="sd">    NOTE:</span>
+<span class="sd">        This will reformat a name if it is not a proper python vairable name</span>
+<span class="sd">        n = Name(&quot;123*helloworld&quot;) -&gt; (unquoted) helloworld</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_valid</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Name.make_valid"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Name.make_valid">[docs]</a>    <span class="k">def</span> <span class="nf">make_valid</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Convert a string to a valid python name</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (string): The name to be converted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;[^0-9a-zA-Z_]&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>  <span class="c"># Remove invalid characters</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;^[^a-zA-Z_]+&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>   <span class="c"># Remove leading characters until we find a letter or underscore</span>
+        <span class="k">return</span> <span class="n">name</span>
+
+</div></div>
+<div class="viewcode-block" id="Str"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Str">[docs]</a><span class="k">class</span> <span class="nc">Str</span><span class="p">(</span><span class="n">Statement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A quoted string</span>
+
+<span class="sd">    s = Str(&quot;hello world&quot;) -&gt; literal &#39;hello world&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Str</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">string_args</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Str.string_args"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Str.string_args">[docs]</a>    <span class="k">def</span> <span class="nf">string_args</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Enclose your positional arguments in strings so it can be used as an</span>
+<span class="sd">        argument, rather than part of the arg spec.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            args (list/string): A string/list of strings to be quoted</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">&#39;&quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">&#39;&quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="Num"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Num">[docs]</a><span class="k">class</span> <span class="nc">Num</span><span class="p">(</span><span class="n">Statement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A number. Int or Float.</span>
+
+<span class="sd">    n = Num(&quot;4&quot;) -&gt; 4</span>
+
+<span class="sd">    n = Num(4) -&gt; 4</span>
+<span class="sd">    </span>
+<span class="sd">    n = Num(4.0) -&gt; 4.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Num</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">code</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

@@ -1,6 +1,5 @@
 #!env/bin/python
-from sourcerer.base import Statement
-from formatters import Formatter
+from sourcerer import Statement
 from sys import stdout
 from pdb import set_trace
 

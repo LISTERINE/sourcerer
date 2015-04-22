@@ -73,6 +73,16 @@ class DecoratorDef(FunctionDef):
         return self.render(*args, **kwargs)
 
 
+class ClassDef(FunctionDef):
+    """ Define a class
+    result will look like 'class cls(...):'
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(ClassDef, self).__init__(*args, **kwargs)
+        self.header = "class {}{}:"
+
+
 class Call(FunctionDef):
     """ Used to call functions or instantiate Classes """
 

@@ -1,5 +1,4 @@
-from sourcerer.callables import FunctionDef, DecoratorDef
-from sourcerer.simple_statements import Return, Docstring
+from sourcerer import FunctionDef, Return
 
 
 base_syntax = {"functions": {'type': FunctionDef,

@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sourcerer.formatters module &mdash; sourcerer 0.0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sourcerer 0.0.3 documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">sourcerer 0.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sourcerer.formatters">
+<span id="sourcerer-formatters-module"></span><h1>sourcerer.formatters module<a class="headerlink" href="#module-sourcerer.formatters" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sourcerer.formatters.CallFormatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">CallFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#CallFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.CallableFormatter" title="sourcerer.formatters.CallableFormatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.CallableFormatter</span></code></a></p>
+<p>The formatter that should be used when calling functions</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.CallFormatter.arg_names">
+<em class="property">classmethod </em><code class="descname">arg_names</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallFormatter.arg_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallFormatter.arg_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quote data in positional arguments so that it will be passed into a call</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.formatters.CallableFormatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">CallableFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.NameFormatter" title="sourcerer.formatters.NameFormatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.NameFormatter</span></code></a></p>
+<p>This formatter should be used on callable objects like decorators and fuctions</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.CallableFormatter.arg_names">
+<em class="property">classmethod </em><code class="descname">arg_names</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter.arg_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter.arg_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract function for formatting positional arguments</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="sourcerer.formatters.CallableFormatter.kwarg_pairs">
+<em class="property">classmethod </em><code class="descname">kwarg_pairs</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter.kwarg_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter.kwarg_pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract function for formatting keyword arguments</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="sourcerer.formatters.CallableFormatter.name">
+<em class="property">classmethod </em><code class="descname">name</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#CallableFormatter.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.CallableFormatter.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace all punctuation in a callables name with underscores</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.formatters.Formatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">Formatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#Formatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.Formatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Formatting operations for syntax objects</p>
+<p>Name functions after the property they will be operating on.
+All function should take one argument of &#8216;property&#8217;.</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.Formatter.apply">
+<em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>syntax_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#Formatter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.Formatter.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply all formatters to the given object</p>
+<p>This method will search the given syntax object for any property which
+has the same name as a formatter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>syntax_obj</strong> (<em>object</em>) &#8211; The object with the attributes to be formatted</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.formatters.NameFormatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">NameFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#NameFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.NameFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.Formatter" title="sourcerer.formatters.Formatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.Formatter</span></code></a></p>
+<p>Base Formatter for object names like variables/functions/classes</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.NameFormatter.code">
+<em class="property">classmethod </em><code class="descname">code</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#NameFormatter.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.NameFormatter.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.formatters.QuotedFormatter">
+<em class="property">class </em><code class="descclassname">sourcerer.formatters.</code><code class="descname">QuotedFormatter</code><a class="reference internal" href="_modules/sourcerer/formatters.html#QuotedFormatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.QuotedFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.formatters.Formatter" title="sourcerer.formatters.Formatter"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.formatters.Formatter</span></code></a></p>
+<p>Quotes the objects code in &#8216;single quotes&#8217;</p>
+<dl class="classmethod">
+<dt id="sourcerer.formatters.QuotedFormatter.code">
+<em class="property">classmethod </em><code class="descname">code</code><span class="sig-paren">(</span><em>property</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/formatters.html#QuotedFormatter.code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.formatters.QuotedFormatter.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/sourcerer.formatters.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">sourcerer 0.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Jonathan Ferretti.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -2,6 +2,13 @@ from string import maketrans, punctuation, whitespace
 from traceback import format_exc
 
 
+"""
+If I've done things properly, this whole file and the concept of formatters can go away.
+but it can't yet.
+I think.
+"""
+
+
 class Formatter(object):
     """ Formatting operations for syntax objects
 

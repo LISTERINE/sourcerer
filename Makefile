@@ -52,7 +52,7 @@ coverage:
 docs:
 	rm -f docs/sourcerer.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ sourcerer
+	sphinx-apidoc -f -o docs/ sourcerer
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	open docs/_build/html/index.html

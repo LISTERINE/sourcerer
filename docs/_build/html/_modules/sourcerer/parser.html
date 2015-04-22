@@ -47,24 +47,13 @@
           <div class="body" role="main">
             
   <h1>Source code for sourcerer.parser</h1><div class="highlight"><pre>
-<span class="kn">from</span> <span class="nn">sourcerer.base</span> <span class="kn">import</span> <span class="n">Document</span>
-<span class="kn">from</span> <span class="nn">sourcerer.simple_statements</span> <span class="kn">import</span> <span class="n">ReturnObj</span><span class="p">,</span> <span class="n">Docstring</span>
-<span class="kn">from</span> <span class="nn">sourcerer.callables</span> <span class="kn">import</span> <span class="n">FunctionObj</span><span class="p">,</span> <span class="n">DecoratorObj</span>
-<span class="kn">from</span> <span class="nn">sourcerer.syntaxes</span> <span class="kn">import</span> <span class="n">base_syntax</span><span class="p">,</span> <span class="n">yaml_syntax</span>
+<span class="kn">from</span> <span class="nn">sourcerer</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">base_syntax</span><span class="p">,</span> <span class="n">yaml_syntax</span>
 <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">argv</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">from</span> <span class="nn">pdb</span> <span class="kn">import</span> <span class="n">set_trace</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">r = RouteFunctionObj(name=&quot;test_route&quot;)</span>
-<span class="sd">ret = ReturnObj</span>
-<span class="sd">ret = ReturnObj()</span>
-<span class="sd">dec = RouteDecoratorObj(name=&quot;route&quot;, arg_names=[&quot;/products&quot;])</span>
 
-<span class="sd">doc = Document()</span>
-<span class="sd">doc.add_children(route([dec], r, ret))</span>
-<span class="sd">doc.export()</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<div class="viewcode-block" id="DefaultProcessor"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.parser.DefaultProcessor">[docs]</a><span class="k">class</span> <span class="nc">DefaultProcessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DefaultProcessor"><a class="viewcode-back" href="../../sourcerer.parser.html#sourcerer.parser.DefaultProcessor">[docs]</a><span class="k">class</span> <span class="nc">DefaultProcessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">syntax</span><span class="o">=</span><span class="n">base_syntax</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a default empty Document</span>
@@ -76,7 +65,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span> <span class="o">=</span> <span class="n">syntax</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">parser</span> <span class="k">if</span> <span class="n">parser</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
 
-<div class="viewcode-block" id="DefaultProcessor.load"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.parser.DefaultProcessor.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DefaultProcessor.load"><a class="viewcode-back" href="../../sourcerer.parser.html#sourcerer.parser.DefaultProcessor.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Parse a specification file into a deserialized format</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
@@ -92,7 +81,7 @@
                 <span class="k">for</span> <span class="n">section</span><span class="p">,</span> <span class="n">objects</span> <span class="ow">in</span> <span class="n">parsed_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">add_children</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assemble</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">objects</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="DefaultProcessor.assemble"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.parser.DefaultProcessor.assemble">[docs]</a>    <span class="k">def</span> <span class="nf">assemble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="n">parsed_data</span><span class="p">):</span>
+<div class="viewcode-block" id="DefaultProcessor.assemble"><a class="viewcode-back" href="../../sourcerer.parser.html#sourcerer.parser.DefaultProcessor.assemble">[docs]</a>    <span class="k">def</span> <span class="nf">assemble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="n">parsed_data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Process all the nodes in a parsed input document &quot;&quot;&quot;</span>
         <span class="n">code_objects</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">object_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -108,7 +97,7 @@
                 <span class="n">code_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code_obj</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">code_objects</span>
 </div>
-<div class="viewcode-block" id="DefaultProcessor.extract_parameters"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.parser.DefaultProcessor.extract_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">extract_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+<div class="viewcode-block" id="DefaultProcessor.extract_parameters"><a class="viewcode-back" href="../../sourcerer.parser.html#sourcerer.parser.DefaultProcessor.extract_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">extract_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Extract data about code object arguments and children </span>
 
 <span class="sd">        Args:</span>
@@ -116,8 +105,8 @@
 <span class="sd">            obj_id (str): The key that identified this object in its parent dict</span>
 <span class="sd">            parameters (dict): The dictionary of properties of the code object to be created</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span><span class="p">[</span><span class="n">obj_type</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;value_map&#39;</span><span class="p">)</span>    <span class="c"># Syntax Map value_map for this code object</span>
-        <span class="n">child_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span><span class="p">[</span><span class="n">obj_type</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;children&#39;</span><span class="p">,</span> <span class="p">{})</span> <span class="c"># Syntax Map child_map for this code object</span>
+        <span class="n">value_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span><span class="p">[</span><span class="n">obj_type</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;value_map&#39;</span><span class="p">)</span>     <span class="c"># Syntax Map value_map for this code object</span>
+        <span class="n">child_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">syntax</span><span class="p">[</span><span class="n">obj_type</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;children&#39;</span><span class="p">,</span> <span class="p">{})</span>  <span class="c"># Syntax Map child_map for this code object</span>
         <span class="n">code_obj_args</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">child_code_objs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">param_value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -129,7 +118,7 @@
         <span class="k">return</span> <span class="n">code_obj_args</span><span class="p">,</span> <span class="n">child_code_objs</span>
              
 </div>
-<div class="viewcode-block" id="DefaultProcessor.output"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.parser.DefaultProcessor.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="DefaultProcessor.output"><a class="viewcode-back" href="../../sourcerer.parser.html#sourcerer.parser.DefaultProcessor.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write out the syntax tree &quot;&quot;&quot;</span>
         <span class="n">syntax_string</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">output_file_name</span><span class="p">:</span>
@@ -138,7 +127,7 @@
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
                 <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">syntax_string</span><span class="p">)</span>
 </div></div>
-<div class="viewcode-block" id="YAMLProcessor"><a class="viewcode-back" href="../../sourcerer.html#sourcerer.parser.YAMLProcessor">[docs]</a><span class="k">class</span> <span class="nc">YAMLProcessor</span><span class="p">(</span><span class="n">DefaultProcessor</span><span class="p">):</span>
+<div class="viewcode-block" id="YAMLProcessor"><a class="viewcode-back" href="../../sourcerer.parser.html#sourcerer.parser.YAMLProcessor">[docs]</a><span class="k">class</span> <span class="nc">YAMLProcessor</span><span class="p">(</span><span class="n">DefaultProcessor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A processor that builds a Document from a YAML file &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">syntax</span><span class="o">=</span><span class="n">yaml_syntax</span><span class="p">):</span>

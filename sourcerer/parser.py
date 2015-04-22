@@ -56,8 +56,8 @@ class DefaultProcessor(object):
             obj_id (str): The key that identified this object in its parent dict
             parameters (dict): The dictionary of properties of the code object to be created
         """
-        value_map = self.syntax[obj_type].get('value_map')    # Syntax Map value_map for this code object
-        child_map = self.syntax[obj_type].get('children', {}) # Syntax Map child_map for this code object
+        value_map = self.syntax[obj_type].get('value_map')     # Syntax Map value_map for this code object
+        child_map = self.syntax[obj_type].get('children', {})  # Syntax Map child_map for this code object
         code_obj_args = {}
         child_code_objs = []
         for param, param_value in parameters.items():

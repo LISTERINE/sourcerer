@@ -73,13 +73,23 @@ class DecoratorDef(FunctionDef):
         return self.render(*args, **kwargs)
 
 
+class ClassDef(FunctionDef):
+    """ Define a class
+    result will look like 'class cls(...):'
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(ClassDef, self).__init__(*args, **kwargs)
+        self.header = "class {}{}:"
+
+
 class Call(FunctionDef):
     """ Used to call functions or instantiate Classes """
 
     def __init__(self, caller_list=None, *args, **kwargs):
         """
         Args:
-            caller_list (list): The list of predecessor CallerObjects ex. [C1,f1,f2] = C1.f1().f2().self()
+            caller_list (list): The list of predecessor Call/Name Objects ex. [C1,f1,f2] = C1.f1().f2().self()
         """
         super(Call, self).__init__(*args, **kwargs)
         self.caller_list = caller_list if caller_list else []

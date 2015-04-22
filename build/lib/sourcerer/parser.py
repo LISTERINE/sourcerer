@@ -1,20 +1,9 @@
-from sourcerer.modules import Document
-from sourcerer.simple_statements import Return, Docstring
-from sourcerer.callables import FunctionDef, DecoratorDef
-from sourcerer.syntaxes import base_syntax, yaml_syntax
+from sourcerer import Document, base_syntax, yaml_syntax
 from sys import stdout, argv
 import yaml
 from pdb import set_trace
-"""
-r = RouteFunctionObj(name="test_route")
-ret = Return
-ret = Return()
-dec = RouteDecoratorObj(name="route", arg_names=["/products"])
 
-doc = Document()
-doc.add_children(route([dec], r, ret))
-doc.export()
-"""
+
 class DefaultProcessor(object):
 
     def __init__(self, parser=None, syntax=base_syntax):
@@ -67,8 +56,8 @@ class DefaultProcessor(object):
             obj_id (str): The key that identified this object in its parent dict
             parameters (dict): The dictionary of properties of the code object to be created
         """
-        value_map = self.syntax[obj_type].get('value_map')    # Syntax Map value_map for this code object
-        child_map = self.syntax[obj_type].get('children', {}) # Syntax Map child_map for this code object
+        value_map = self.syntax[obj_type].get('value_map')     # Syntax Map value_map for this code object
+        child_map = self.syntax[obj_type].get('children', {})  # Syntax Map child_map for this code object
         code_obj_args = {}
         child_code_objs = []
         for param, param_value in parameters.items():

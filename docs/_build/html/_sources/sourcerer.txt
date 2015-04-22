@@ -36,6 +36,14 @@ sourcerer.formatters module
     :undoc-members:
     :show-inheritance:
 
+sourcerer.modules module
+------------------------
+
+.. automodule:: sourcerer.modules
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 sourcerer.parser module
 -----------------------
 
