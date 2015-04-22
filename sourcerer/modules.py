@@ -1,6 +1,7 @@
 #!env/bin/python
 from sourcerer import Statement
 from sys import stdout
+from yapf.yapflib.yapf_api import FormatCode
 from pdb import set_trace
 
 
@@ -14,10 +15,12 @@ class Document(Statement):
         super(Document, self).__init__(*args, **kwargs)
         self.line_ending = ''
 
-    def output(self, output_file_name=''):
+    def output(self, output_file_name='', yapf=True):
         """ Write out the syntax tree """
 
         syntax_string = ''.join(self)
+        if yapf:
+            syntax_string = FormatCode(syntax_string)
         if not output_file_name:
             stdout.write(syntax_string)
         else:

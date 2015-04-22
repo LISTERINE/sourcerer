@@ -56,7 +56,8 @@ class FunctionDef(Statement):
         self.code = self.header.format(self.name, self.arg_spec)
 
     def format(self):
-        CallableFormatter.apply(self)
+        pass
+        #CallableFormatter.apply(self)
 
 
 class DecoratorDef(FunctionDef):

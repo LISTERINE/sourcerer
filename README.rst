@@ -15,30 +15,35 @@ Generate code from code:
 ------------------------
 .. code-block:: python
 
-        from yaml import load
-        from sourcerer.base import Document
-        from sourcerer.callables import FunctionObj, DecoratorObj
-        from sourcerer.simple_statements import ReturnObj
-        from sys import argv
+    from yaml import load
+    from sourcerer import Document, FunctionDef, DecoratorDef, Return, Str, Name, Call, Assignment
+    from sys import argv
 
-        # Create a docuemnt to put our code in
-        doc = Document()
+    # Create a document to put our code in
+    doc = Document()
 
-        # Open our yml file and read it in
-        api = load(open(argv[1], 'r').read())
-        for path in api['paths']:
-            route = [DecoratorObj(name="route", arg_names=[path]), # A decorator: @routename("mypath")
-                     FunctionObj(name=path), # A function: def routename():
-                     ReturnObj()] # A return statement: return
+    # Open our yml file and read it in
+    api = load(open(argv[1], 'r').read())
 
-            doc.create_lineage(route) # Cascade these objects into the main document scope
-                                      # ...
-                                      # @routename("mypath")
-                                      # def routename():
-                                      #     return
-                                      # ...
+    rapi = Assignment("rapi",
+               Call(name="Blueprint",
+                    arg_names=[Str(api['basePath'].lstrip('/')), '__name__'],
+                    kwarg_pairs={'template_folder': Str('templates')}))
+    doc.add_child(rapi)
 
-        doc.output() # Send output to standard out (output to file optional)
+    for path in api['paths']:
+        route = [DecoratorDef(name="rapi.route", arg_names=[Str(path)]), # A decorator: @routename("mypath")
+                 FunctionDef(name=Name(path)), # A function: def routename():
+                 Return()] # A return statement: return
+
+        doc.create_lineage(route) # Cascade these objects into the main document scope
+                                  # ...
+                                  # @routename("mypath")
+                                  # def routename():
+                                  #     return
+                                  # ...
+
+    doc.output() # Send output to standard out (output to file optional)
 
 Generate code from Spellbooks
 -----------------------------
@@ -65,20 +70,20 @@ Example Syntax Map to parse this Spellbook:
 .. code-block:: python
 
     # Without inline comments
-    {"functions": {'type': FunctionObj,
+    {"functions": {'type': FunctionDef,
                    'key': 'name',
                    'value_map': {'args': 'arg_names',
                                  'kwargs': 'kwarg_pairs',
                                  'varargs': 'varargs',
                                  'keywords': 'keywords'},
                    'children':{'ret':'return'}},
-     "return": {'type': ReturnObj,
+     "return": {'type': Return,
                  'value_map': {'value':'val'}}
     }
 
     # With inline comments
-    {"functions": {'type': FunctionObj, # Each top level entry under functions is a FunctionObj
-                   'key': 'name', # The functions key (func1) is the value to the name argument for FunctionObj
+    {"functions": {'type': FunctionDef, # Each top level entry under functions is a FunctionDef
+                   'key': 'name', # The functions key (func1) is the value to the name argument for the FunctionDef
                    'value_map': {'args': 'arg_names',  # Define what args are called in the markups schema
                                  'kwargs': 'kwarg_pairs',
                                  'varargs': 'varargs',
@@ -86,7 +91,7 @@ Example Syntax Map to parse this Spellbook:
                    'children':{'ret':'return'}}, # When top-level objects are seen their values will be 
                                                  # pared as well, building a new object from the mapping 
                                                  # they specify and then appended to this object
-     "return": {'type': ReturnObj,
+     "return": {'type': Return,
                  'value_map': {'value':'val'}}
     }
 
@@ -123,7 +128,7 @@ Based on the example Syntax Map and the Example YAML, the following will write t
 
 .. code-block:: python
 
-    from sourcerer.parser import YAMLProcessor
+    from sourcerer import YAMLProcessor
 
     gen = YAMLProcessor()
     gen.load('sample_data/sample.yml')
@@ -134,4 +139,4 @@ Based on the example Syntax Map and the Example YAML, the following will write t
 Features
 --------
 
-* TODO
+YAPF format output (output)

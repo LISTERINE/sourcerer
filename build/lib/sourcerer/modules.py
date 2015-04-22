@@ -1,6 +1,7 @@
 #!env/bin/python
 from sourcerer import Statement
 from sys import stdout
+from yapf.yapflib.yapf_api import FormatCode
 from pdb import set_trace
 
 
@@ -17,7 +18,7 @@ class Document(Statement):
     def output(self, output_file_name=''):
         """ Write out the syntax tree """
 
-        syntax_string = ''.join(self)
+        syntax_string = FormatCode(''.join(self))
         if not output_file_name:
             stdout.write(syntax_string)
         else:

@@ -16,7 +16,15 @@ docs/installation.rst
 docs/make.bat
 docs/modules.rst
 docs/readme.rst
+docs/sourcerer.base.rst
+docs/sourcerer.callables.rst
+docs/sourcerer.engine.rst
+docs/sourcerer.formatters.rst
+docs/sourcerer.modules.rst
+docs/sourcerer.parser.rst
 docs/sourcerer.rst
+docs/sourcerer.simple_statements.rst
+docs/sourcerer.syntaxes.rst
 docs/usage.rst
 sourcerer/__init__.py
 sourcerer/base.py

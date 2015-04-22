@@ -55,4 +55,4 @@ class Assignment(Statement):
                 obj.generate()
             except AttributeError:
                 pass
-        self.code = self.target + ' = ' + self.value
+        self.code = str(self.target) + ' = ' + str(self.value)

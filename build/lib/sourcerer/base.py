@@ -207,7 +207,9 @@ class Num(Statement):
     """ A number. Int or Float.
 
     n = Num("4") -> 4
+
     n = Num(4) -> 4
+
     n = Num(4.0) -> 4.0
     """
 
