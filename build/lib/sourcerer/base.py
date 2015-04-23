@@ -1,6 +1,7 @@
 #!env/bin/python
 from pdb import set_trace
 import re
+from itertools import chain
 from sys import stdout
 
 
@@ -56,20 +57,29 @@ class Statement(object):
             child_list (list): a list of children to append to this objects scope
         """
         for child in child_list:
-            self.add_child(child)
+            if isinstance(child, list):
+                self.add_children(child)
+            else:
+                self.add_child(child)
 
     def create_lineage(self, lineage):
         """ Create a hierarchical lineage of children with this object as the oldest member. eg.
-        children = [c1, c2, c3]
+        children = [c1, [c2.1, c2.2], c3]
         result -- self (top level)
                     |-> c1
-                        |-> c2
+                        |-> c2.1
+                            c2.2
                             |-> c3
         """
         current_node = self
         for child in lineage:
-            current_node.add_child(child)
-            current_node = child
+            if child:
+                if isinstance(child, list):
+                    current_node.add_children(child)
+                    current_node = child[-1]
+                else:
+                    current_node.add_child(child)
+                    current_node = child
 
     def from_parent(self, parent):
         """ Append this statement to a parents scope 

@@ -28,19 +28,25 @@ def test_statment_add_child():
 
 def test_statment_add_children():
     s = Statement()
-    s2 = Statement()
+    s21 = Statement()
+    s22 = Statement()
+    s2 = [s21, s22]
     s3 = Statement()
     s.add_children([s2, s3])
-    assert s.scope[0] is s2
-    assert s.scope[1] is s3
+    assert s.scope[0] is s21
+    assert s.scope[1] is s22
+    assert s.scope[2] is s3
 
 def test_statement_create_lineage():
     s = Statement()
-    s2 = Statement()
+    s21 = Statement()
+    s22 = Statement()
+    s2 = [s21, s22]
     s3 = Statement()
     s.create_lineage([s2, s3])
-    assert s.scope[0] is s2
-    child = s.scope[0]
+    assert s.scope[0] is s21
+    assert s.scope[1] is s22
+    child = s.scope[1]
     assert child.scope[0] is s3
 
 def test_statement_from_parent():

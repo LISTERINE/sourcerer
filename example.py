@@ -8,9 +8,9 @@ doc = Document()
 api = load(open(argv[1], 'r').read())
 
 rapi = Assignment("rapi",
-           Call(name="Blueprint",
-                arg_names=[Str(api['basePath'].lstrip('/')), '__name__'],
-                kwarg_pairs={'template_folder': Str('templates')}))
+                  Call(name="Blueprint",
+                       arg_names=[Str(api['basePath'].lstrip('/')), '__name__'],
+                       kwarg_pairs={'template_folder': Str('templates')}))
 doc.add_child(rapi)
 
 for path in api['paths']:
@@ -25,7 +25,7 @@ for path in api['paths']:
         docstrings.append(method.upper()+': '+path_data[method]['summary'])
         returns.extend([Return(val=ret) for ret in path_data[method].get('responses', [])])
     func = FunctionDef(name=Name(path), arg_names=params)
-    func.add_children([Docstring('\n'.join(docstrings))].extend(returns))
+    func.add_children([Docstring('\n'.join(docstrings)), returns])
     route = [DecoratorDef(name="rapi.route", arg_names=[Str(path)], kwarg_pairs={"methods": methods}),
              func]
 
