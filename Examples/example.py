@@ -28,7 +28,6 @@ for path in api['paths']:
     func.add_children([Docstring('\n'.join(docstrings)), returns])
     route = [DecoratorDef(name="rapi.route", arg_names=[Str(path)], kwarg_pairs={"methods": methods}),
              func]
-
     doc.create_lineage(route)
 
 doc.output()

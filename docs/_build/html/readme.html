@@ -6,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>sourcerer &mdash; sourcerer 0.0.3 documentation</title>
+    <title>sourcerer &mdash; sourcerer 0.1.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.3',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="sourcerer 0.0.3 documentation" href="index.html" />
+    <link rel="top" title="sourcerer 0.1.0 documentation" href="index.html" />
     <link rel="next" title="Installation" href="installation.html" />
     <link rel="prev" title="Welcome to sourcerer’s documentation!" href="index.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to sourcerer’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">sourcerer 0.0.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">sourcerer 0.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -60,20 +60,25 @@
 <div class="section" id="generate-code-from-code">
 <h2>Generate code from code:<a class="headerlink" href="#generate-code-from-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">load</span>
-<span class="kn">from</span> <span class="nn">sourcerer.base</span> <span class="kn">import</span> <span class="n">Document</span>
-<span class="kn">from</span> <span class="nn">sourcerer.callables</span> <span class="kn">import</span> <span class="n">FunctionObj</span><span class="p">,</span> <span class="n">DecoratorObj</span>
-<span class="kn">from</span> <span class="nn">sourcerer.simple_statements</span> <span class="kn">import</span> <span class="n">ReturnObj</span>
+<span class="kn">from</span> <span class="nn">sourcerer</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">FunctionDef</span><span class="p">,</span> <span class="n">DecoratorDef</span><span class="p">,</span> <span class="n">Return</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Call</span><span class="p">,</span> <span class="n">Assignment</span>
 <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">argv</span>
 
-<span class="c"># Create a docuemnt to put our code in</span>
+<span class="c"># Create a document to put our code in</span>
 <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">()</span>
 
 <span class="c"># Open our yml file and read it in</span>
 <span class="n">api</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="n">rapi</span> <span class="o">=</span> <span class="n">Assignment</span><span class="p">(</span><span class="s">&quot;rapi&quot;</span><span class="p">,</span>
+           <span class="n">Call</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Blueprint&quot;</span><span class="p">,</span>
+                <span class="n">arg_names</span><span class="o">=</span><span class="p">[</span><span class="n">Str</span><span class="p">(</span><span class="n">api</span><span class="p">[</span><span class="s">&#39;basePath&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)),</span> <span class="s">&#39;__name__&#39;</span><span class="p">],</span>
+                <span class="n">kwarg_pairs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;template_folder&#39;</span><span class="p">:</span> <span class="n">Str</span><span class="p">(</span><span class="s">&#39;templates&#39;</span><span class="p">)}))</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">rapi</span><span class="p">)</span>
+
 <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">api</span><span class="p">[</span><span class="s">&#39;paths&#39;</span><span class="p">]:</span>
-    <span class="n">route</span> <span class="o">=</span> <span class="p">[</span><span class="n">DecoratorObj</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;route&quot;</span><span class="p">,</span> <span class="n">arg_names</span><span class="o">=</span><span class="p">[</span><span class="n">path</span><span class="p">]),</span> <span class="c"># A decorator: @routename(&quot;mypath&quot;)</span>
-             <span class="n">FunctionObj</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">path</span><span class="p">),</span> <span class="c"># A function: def routename():</span>
-             <span class="n">ReturnObj</span><span class="p">()]</span> <span class="c"># A return statement: return</span>
+    <span class="n">route</span> <span class="o">=</span> <span class="p">[</span><span class="n">DecoratorDef</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;rapi.route&quot;</span><span class="p">,</span> <span class="n">arg_names</span><span class="o">=</span><span class="p">[</span><span class="n">Str</span><span class="p">(</span><span class="n">path</span><span class="p">)]),</span> <span class="c"># A decorator: @routename(&quot;mypath&quot;)</span>
+             <span class="n">FunctionDef</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">Name</span><span class="p">(</span><span class="n">path</span><span class="p">)),</span> <span class="c"># A function: def routename():</span>
+             <span class="n">Return</span><span class="p">()]</span> <span class="c"># A return statement: return</span>
 
     <span class="n">doc</span><span class="o">.</span><span class="n">create_lineage</span><span class="p">(</span><span class="n">route</span><span class="p">)</span> <span class="c"># Cascade these objects into the main document scope</span>
                               <span class="c"># ...</span>
@@ -107,20 +112,20 @@ Spellbooks can be parsed into source code be defining a schema, called a Syntax 
 <div class="section" id="example-syntax-map-to-parse-this-spellbook">
 <h3>Example Syntax Map to parse this Spellbook:<a class="headerlink" href="#example-syntax-map-to-parse-this-spellbook" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># Without inline comments</span>
-<span class="p">{</span><span class="s">&quot;functions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">FunctionObj</span><span class="p">,</span>
+<span class="p">{</span><span class="s">&quot;functions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">FunctionDef</span><span class="p">,</span>
                <span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">,</span>
                <span class="s">&#39;value_map&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;args&#39;</span><span class="p">:</span> <span class="s">&#39;arg_names&#39;</span><span class="p">,</span>
                              <span class="s">&#39;kwargs&#39;</span><span class="p">:</span> <span class="s">&#39;kwarg_pairs&#39;</span><span class="p">,</span>
                              <span class="s">&#39;varargs&#39;</span><span class="p">:</span> <span class="s">&#39;varargs&#39;</span><span class="p">,</span>
                              <span class="s">&#39;keywords&#39;</span><span class="p">:</span> <span class="s">&#39;keywords&#39;</span><span class="p">},</span>
                <span class="s">&#39;children&#39;</span><span class="p">:{</span><span class="s">&#39;ret&#39;</span><span class="p">:</span><span class="s">&#39;return&#39;</span><span class="p">}},</span>
- <span class="s">&quot;return&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">ReturnObj</span><span class="p">,</span>
+ <span class="s">&quot;return&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">Return</span><span class="p">,</span>
              <span class="s">&#39;value_map&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;val&#39;</span><span class="p">}}</span>
 <span class="p">}</span>
 
 <span class="c"># With inline comments</span>
-<span class="p">{</span><span class="s">&quot;functions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">FunctionObj</span><span class="p">,</span> <span class="c"># Each top level entry under functions is a FunctionObj</span>
-               <span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="c"># The functions key (func1) is the value to the name argument for FunctionObj</span>
+<span class="p">{</span><span class="s">&quot;functions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">FunctionDef</span><span class="p">,</span> <span class="c"># Each top level entry under functions is a FunctionDef</span>
+               <span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="c"># The functions key (func1) is the value to the name argument for the FunctionDef</span>
                <span class="s">&#39;value_map&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;args&#39;</span><span class="p">:</span> <span class="s">&#39;arg_names&#39;</span><span class="p">,</span>  <span class="c"># Define what args are called in the markups schema</span>
                              <span class="s">&#39;kwargs&#39;</span><span class="p">:</span> <span class="s">&#39;kwarg_pairs&#39;</span><span class="p">,</span>
                              <span class="s">&#39;varargs&#39;</span><span class="p">:</span> <span class="s">&#39;varargs&#39;</span><span class="p">,</span>
@@ -128,7 +133,7 @@ Spellbooks can be parsed into source code be defining a schema, called a Syntax 
                <span class="s">&#39;children&#39;</span><span class="p">:{</span><span class="s">&#39;ret&#39;</span><span class="p">:</span><span class="s">&#39;return&#39;</span><span class="p">}},</span> <span class="c"># When top-level objects are seen their values will be</span>
                                              <span class="c"># pared as well, building a new object from the mapping</span>
                                              <span class="c"># they specify and then appended to this object</span>
- <span class="s">&quot;return&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">ReturnObj</span><span class="p">,</span>
+ <span class="s">&quot;return&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">Return</span><span class="p">,</span>
              <span class="s">&#39;value_map&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;val&#39;</span><span class="p">}}</span>
 <span class="p">}</span>
 </pre></div>
@@ -160,7 +165,7 @@ Spellbooks can be parsed into source code be defining a schema, called a Syntax 
 <div class="section" id="using-a-syntax-map-and-spellbook-to-generate-your-source">
 <h3>Using a Syntax Map and Spellbook to generate your source:<a class="headerlink" href="#using-a-syntax-map-and-spellbook-to-generate-your-source" title="Permalink to this headline">¶</a></h3>
 <p>Based on the example Syntax Map and the Example YAML, the following will write the resulting source code to stardard out</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sourcerer.parser</span> <span class="kn">import</span> <span class="n">YAMLProcessor</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sourcerer</span> <span class="kn">import</span> <span class="n">YAMLProcessor</span>
 
 <span class="n">gen</span> <span class="o">=</span> <span class="n">YAMLProcessor</span><span class="p">()</span>
 <span class="n">gen</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;sample_data/sample.yml&#39;</span><span class="p">)</span>
@@ -171,9 +176,7 @@ Spellbooks can be parsed into source code be defining a schema, called a Syntax 
 </div>
 <div class="section" id="features">
 <h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>TODO</li>
-</ul>
+<p>YAPF formatted output to produce pep8 compliant code</p>
 </div>
 </div>
 
@@ -247,12 +250,12 @@ Spellbooks can be parsed into source code be defining a schema, called a Syntax 
         <li class="right" >
           <a href="index.html" title="Welcome to sourcerer’s documentation!"
              >previous</a> |</li>
-        <li><a href="index.html">sourcerer 0.0.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">sourcerer 0.1.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2015, Jonathan Ferretti.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>
