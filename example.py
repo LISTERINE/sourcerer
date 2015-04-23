@@ -1,11 +1,10 @@
 from yaml import load
-from sourcerer import Document, FunctionDef, DecoratorDef, Return, Str, Name, Call, Assignment
+from sourcerer import Document, FunctionDef, DecoratorDef, Return, Str, Name, Call, Assignment, Docstring
 from sys import argv
 
-# Create a document to put our code in
+
 doc = Document()
 
-# Open our yml file and read it in
 api = load(open(argv[1], 'r').read())
 
 rapi = Assignment("rapi",
@@ -15,15 +14,21 @@ rapi = Assignment("rapi",
 doc.add_child(rapi)
 
 for path in api['paths']:
-    route = [DecoratorDef(name="rapi.route", arg_names=[Str(path)]), # A decorator: @routename("mypath")
-             FunctionDef(name=Name(path)), # A function: def routename():
-             Return()] # A return statement: return
+    methods = []
+    docstrings = []
+    returns = []
+    params = []
+    path_data = api['paths'][path]
+    for method in path_data:
+        methods.append(Str(method.upper()))
+        params.extend([Name(arg['name']) for arg in path_data[method].get('parameters', [])])
+        docstrings.append(method.upper()+': '+path_data[method]['summary'])
+        returns.extend([Return(val=ret) for ret in path_data[method].get('responses', [])])
+    func = FunctionDef(name=Name(path), arg_names=params)
+    func.add_children([Docstring('\n'.join(docstrings))].extend(returns))
+    route = [DecoratorDef(name="rapi.route", arg_names=[Str(path)], kwarg_pairs={"methods": methods}),
+             func]
 
-    doc.create_lineage(route) # Cascade these objects into the main document scope
-                              # ...
-                              # @routename("mypath")
-                              # def routename():
-                              #     return
-                              # ...
+    doc.create_lineage(route)
 
-doc.output() # Send output to standard out (output to file optional)
+doc.output()

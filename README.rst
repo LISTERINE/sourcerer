@@ -139,4 +139,4 @@ Based on the example Syntax Map and the Example YAML, the following will write t
 Features
 --------
 
-YAPF format output (output)
+YAPF formatted output to produce pep8 compliant code

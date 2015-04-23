@@ -32,6 +32,10 @@ class Docstring(Statement):
         super(Docstring, self).__init__(*args, **kwargs)
         self.doc_string = doc_string
 
+    def build_renderer(self, *args, **kwargs):
+        kwargs['increment'] = 0
+        return self.render(*args, **kwargs)
+
     def generate(self):
         self.code = '"""{}"""'.format(self.doc_string)
 
