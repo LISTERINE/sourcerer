@@ -2,7 +2,7 @@
 
 __author__ = 'Jonathan Ferretti'
 __email__ = 'jonathan.m.ferretti@gmail.com'
-__version__ = '0.0.3'
+__version__ = '0.1.0'
 
 from base import Statement, Name, Str, Num
 from modules import Document
