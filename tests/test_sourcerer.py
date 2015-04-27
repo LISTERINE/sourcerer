@@ -8,7 +8,7 @@ test_sourcerer
 Tests for `sourcerer` module.
 """
 
-from sourcerer import Statement
+from sourcerer import Statement, Name
 from inspect import isgenerator
 import pytest
 
@@ -91,3 +91,47 @@ class TestStatment():
         assert isinstance(from_string, Statement)
         assert from_state is init
         assert isinstance(from_int, Statement)
+
+
+class TestName():
+
+    valid_function_names = ['_func', '_Func', 'func_', 'Func_']
+
+    invalid_int_function_names = ['1_func', '1_Func', '1func_', '1Func_']
+    valid_int_function_names = valid_function_names
+
+    invalid_punc_function_names = ['(_func', '(_Func', '(func_', '(Func_',
+                                   '_func(', '_Func(', 'func_(', 'Func_(',
+                                   '_(func', '_(Func', 'func(_', 'Func(_']
+    valid_punc_function_names = ['_func', '_Func', 'func_', 'Func_',
+                                 '_func', '_Func', 'func_', 'Func_',
+                                 '_func', '_Func', 'func_', 'Func_']
+
+    invalid_mixed_function_names = ['(1_1func', '1(_1Func', '1(1func_', '1(1Func_',
+                                   '1_func(1', '_1Func1(', 'func1_(1', 'Func_1(1',
+                                   '1_(1func', '_1(Func1', 'func1(1_', '1Func(_1']
+    valid_mixed_function_names = ['_1func', '_1Func', 'func_', 'Func_',
+                                   '_func1', '_1Func1', 'func1_1', 'Func_11',
+                                   '_1func', '_1Func1', 'func11_', 'Func_1']
+
+    def test_format(self):
+        # Make sure we are getting rid of those quotes so we get name and not 'name'
+        for valid in self.valid_function_names:
+            assert Name(valid).__str__() == valid
+            assert Name(valid) != valid
+
+    def test_invalid_int(self):
+        for invalid, valid in zip(self.invalid_int_function_names, self.valid_int_function_names):
+            assert Name(invalid).__str__() == valid
+
+    def test_invalid_punc(self):
+        for invalid, valid in zip(self.invalid_punc_function_names, self.valid_punc_function_names):
+            assert Name(invalid).__str__() == valid
+
+    def test_invalid_mixed(self):
+        for invalid, valid in zip(self.invalid_mixed_function_names, self.valid_mixed_function_names):
+            assert Name(invalid).__str__() == valid
+
+    def test_dont_validate(self):
+        for invalid in self.invalid_mixed_function_names:
+            assert Name(invalid, validate=False).__str__() == invalid

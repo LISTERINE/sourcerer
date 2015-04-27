@@ -171,12 +171,16 @@ class Name(Statement):
     n = Name("helloworld") -> (unquoted) helloworld
 
     NOTE:
-        This will reformat a name if it is not a proper python vairable name
+        Unless the validate flag is set to False, this will reformat a name if
+        it is not a proper python variable name
         n = Name("123*helloworld") -> (unquoted) helloworld
+
+    Args:
+        validate (bool): Should name be converted to valid python variable name?
     """
-    def __init__(self, code, *args, **kwargs):
+    def __init__(self, code, validate=True, *args, **kwargs):
         super(Name, self).__init__(*args, **kwargs)
-        self.code = self.make_valid(code)
+        self.code = self.make_valid(code) if validate else code
 
     @staticmethod
     def make_valid(name):
