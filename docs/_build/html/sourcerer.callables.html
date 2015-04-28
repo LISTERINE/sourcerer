@@ -47,9 +47,33 @@
   <div class="section" id="module-sourcerer.callables">
 <span id="sourcerer-callables-module"></span><h1>sourcerer.callables module<a class="headerlink" href="#module-sourcerer.callables" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="sourcerer.callables.Call">
-<em class="property">class </em><code class="descclassname">sourcerer.callables.</code><code class="descname">Call</code><span class="sig-paren">(</span><em>caller_list=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#Call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.Call" title="Permalink to this definition">¶</a></dt>
+<dt id="sourcerer.callables.Attribute">
+<em class="property">class </em><code class="descclassname">sourcerer.callables.</code><code class="descname">Attribute</code><span class="sig-paren">(</span><em>caller_list=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#Attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.Attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sourcerer.callables.FunctionDef" title="sourcerer.callables.FunctionDef"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.callables.FunctionDef</span></code></a></p>
+<p>Used to access Object attributes</p>
+<dl class="method">
+<dt id="sourcerer.callables.Attribute.build_caller_list">
+<code class="descname">build_caller_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#Attribute.build_caller_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.Attribute.build_caller_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the caller list for this object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sourcerer.callables.Attribute.caller_list">
+<code class="descname">caller_list</code><a class="headerlink" href="#sourcerer.callables.Attribute.caller_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="sourcerer.callables.Attribute.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#Attribute.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.Attribute.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the args and caller list for this object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sourcerer.callables.Call">
+<em class="property">class </em><code class="descclassname">sourcerer.callables.</code><code class="descname">Call</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#Call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.Call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sourcerer.callables.Attribute" title="sourcerer.callables.Attribute"><code class="xref py py-class docutils literal"><span class="pre">sourcerer.callables.Attribute</span></code></a></p>
 <p>Used to call functions or instantiate Classes</p>
 <dl class="method">
 <dt id="sourcerer.callables.Call.format">
@@ -59,7 +83,7 @@
 <dl class="method">
 <dt id="sourcerer.callables.Call.generate">
 <code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#Call.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.Call.generate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set up the args and caller list for this object</p>
+<dd><p>Format the args and caller list for this object</p>
 </dd></dl>
 
 </dd></dl>
@@ -100,11 +124,6 @@ result will look like &#8216;&#64;fn(...)&#8217;</p>
 <code class="descname">build_args_kwargs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#FunctionDef.build_args_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.FunctionDef.build_args_kwargs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the argspec for the function</p>
 </dd></dl>
-
-<dl class="method">
-<dt id="sourcerer.callables.FunctionDef.format">
-<code class="descname">format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sourcerer/callables.html#FunctionDef.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sourcerer.callables.FunctionDef.format" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="sourcerer.callables.FunctionDef.generate">

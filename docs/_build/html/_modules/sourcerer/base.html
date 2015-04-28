@@ -65,9 +65,9 @@
 <span class="sd">        self.code is the actual line of code that this object represents.</span>
 <span class="sd">        self.scope (if any) is the child scope of this statement. eg.</span>
 <span class="sd">         self.code -&gt;   while 1:</span>
-<span class="sd">                        {   do thing 1</span>
-<span class="sd">         self.scope -&gt;  {   do thing 2</span>
-<span class="sd">                        {   do thing 3</span>
+<span class="sd">                      |     do thing 1</span>
+<span class="sd">         self.scope -&gt;|     do thing 2</span>
+<span class="sd">                      |     do thing 3</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            code (str): The code that will be represented</span>
@@ -220,12 +220,16 @@
 <span class="sd">    n = Name(&quot;helloworld&quot;) -&gt; (unquoted) helloworld</span>
 
 <span class="sd">    NOTE:</span>
-<span class="sd">        This will reformat a name if it is not a proper python vairable name</span>
+<span class="sd">        Unless the validate flag is set to False, this will reformat a name if</span>
+<span class="sd">        it is not a proper python variable name</span>
 <span class="sd">        n = Name(&quot;123*helloworld&quot;) -&gt; (unquoted) helloworld</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        validate (bool): Should name be converted to valid python variable name?</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Name</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_valid</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_valid</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="k">if</span> <span class="n">validate</span> <span class="k">else</span> <span class="n">code</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Name.make_valid"><a class="viewcode-back" href="../../sourcerer.base.html#sourcerer.base.Name.make_valid">[docs]</a>    <span class="k">def</span> <span class="nf">make_valid</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
@@ -257,7 +261,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            args (list/string): A string/list of strings to be quoted</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">Statement</span><span class="p">):</span>
             <span class="k">return</span> <span class="s">&#39;&quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="s">&#39;&quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
 

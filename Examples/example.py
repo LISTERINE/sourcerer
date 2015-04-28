@@ -35,4 +35,4 @@ for path in api['paths']:
              func]
     doc.create_lineage(route)
 
-doc.output(yapf=False)
+doc.output()

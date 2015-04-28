@@ -1,9 +1,8 @@
 #!env/bin/python
 
 from base import Statement
-from formatters import CallableFormatter, CallFormatter
+from formatters import CallFormatter
 import inspect
-from string import punctuation, maketrans
 from pdb import set_trace
 
 
@@ -56,10 +55,6 @@ class FunctionDef(Statement):
         Result will look like 'def fn(...):'
         """
         self.code = self.header.format(self.name, self.arg_spec)
-
-    def format(self):
-        pass
-        #CallableFormatter.apply(self)
 
 
 class DecoratorDef(FunctionDef):

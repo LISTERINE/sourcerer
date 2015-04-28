@@ -1,8 +1,6 @@
 #!env/bin/python
 from pdb import set_trace
 import re
-from itertools import chain
-from sys import stdout
 
 
 class Statement(object):
@@ -16,9 +14,9 @@ class Statement(object):
         self.code is the actual line of code that this object represents.
         self.scope (if any) is the child scope of this statement. eg.
          self.code ->   while 1:
-                        {   do thing 1
-         self.scope ->  {   do thing 2
-                        {   do thing 3
+                      |     do thing 1
+         self.scope ->|     do thing 2
+                      |     do thing 3
 
         Args:
             code (str): The code that will be represented

@@ -76,6 +76,8 @@
 <span class="sd">            keywords (bool): Should the argument list contain **kwargs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FunctionDef</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">Statement</span><span class="p">):</span>
+            <span class="n">name</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arg_names</span> <span class="o">=</span> <span class="n">arg_names</span> <span class="k">if</span> <span class="n">arg_names</span> <span class="k">else</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kwarg_pairs</span> <span class="o">=</span> <span class="n">kwarg_pairs</span> <span class="k">if</span> <span class="n">kwarg_pairs</span> <span class="k">else</span> <span class="p">{}</span>
@@ -103,10 +105,6 @@
 <span class="sd">        Result will look like &#39;def fn(...):&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg_spec</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="FunctionDef.format"><a class="viewcode-back" href="../../sourcerer.callables.html#sourcerer.callables.FunctionDef.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-        <span class="c">#CallableFormatter.apply(self)</span>
 
 </div></div>
 <div class="viewcode-block" id="DecoratorDef"><a class="viewcode-back" href="../../sourcerer.callables.html#sourcerer.callables.DecoratorDef">[docs]</a><span class="k">class</span> <span class="nc">DecoratorDef</span><span class="p">(</span><span class="n">FunctionDef</span><span class="p">):</span>
@@ -133,25 +131,50 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="s">&quot;class {}{}:&quot;</span>
 
 </div>
-<div class="viewcode-block" id="Call"><a class="viewcode-back" href="../../sourcerer.callables.html#sourcerer.callables.Call">[docs]</a><span class="k">class</span> <span class="nc">Call</span><span class="p">(</span><span class="n">FunctionDef</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Used to call functions or instantiate Classes &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Attribute"><a class="viewcode-back" href="../../sourcerer.callables.html#sourcerer.callables.Attribute">[docs]</a><span class="k">class</span> <span class="nc">Attribute</span><span class="p">(</span><span class="n">FunctionDef</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Used to access Object attributes &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caller_list</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
-<span class="sd">            caller_list (list): The list of predecessor Call/Name Objects ex. [C1,f1,f2] = C1.f1().f2().self()</span>
+<span class="sd">            caller_list (list): The list of predecessor Objects ex. [C1,f1,f2] = C1.f1().f2().self</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Attribute</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_caller_list</span> <span class="o">=</span> <span class="n">caller_list</span> <span class="k">if</span> <span class="n">caller_list</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="s">&quot;{}{}&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">caller_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_caller_list</span><span class="p">()</span>
+
+    <span class="nd">@caller_list.setter</span>
+    <span class="k">def</span> <span class="nf">caller_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_caller_list</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="Attribute.build_caller_list"><a class="viewcode-back" href="../../sourcerer.callables.html#sourcerer.callables.Attribute.build_caller_list">[docs]</a>    <span class="k">def</span> <span class="nf">build_caller_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set up the caller list for this object &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_caller_list</span><span class="p">:</span>
+
+            <span class="n">call</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+        <span class="n">callers</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">call</span><span class="p">)</span> <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_caller_list</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">callers</span><span class="p">,</span> <span class="s">&#39;.&#39;</span> <span class="k">if</span> <span class="n">callers</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Attribute.generate"><a class="viewcode-back" href="../../sourcerer.callables.html#sourcerer.callables.Attribute.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Format the args and caller list for this object &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caller_list</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Call"><a class="viewcode-back" href="../../sourcerer.callables.html#sourcerer.callables.Call">[docs]</a><span class="k">class</span> <span class="nc">Call</span><span class="p">(</span><span class="n">Attribute</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Used to call functions or instantiate Classes &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Call</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">caller_list</span> <span class="o">=</span> <span class="n">caller_list</span> <span class="k">if</span> <span class="n">caller_list</span> <span class="k">else</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="s">&quot;{}{}{}{}&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="s">&quot;{}{}{}&quot;</span>
 
 <div class="viewcode-block" id="Call.generate"><a class="viewcode-back" href="../../sourcerer.callables.html#sourcerer.callables.Call.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set up the args and caller list for this object &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller_list</span><span class="p">:</span>
-            <span class="n">call</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
-        <span class="n">callers</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">call</span><span class="p">)</span> <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller_list</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">callers</span><span class="p">,</span>
-                                       <span class="s">&#39;.&#39;</span> <span class="k">if</span> <span class="n">callers</span> <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="sd">&quot;&quot;&quot; Format the args and caller list for this object &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caller_list</span><span class="p">,</span>
                                        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                                        <span class="bp">self</span><span class="o">.</span><span class="n">arg_spec</span><span class="p">)</span>
 </div>

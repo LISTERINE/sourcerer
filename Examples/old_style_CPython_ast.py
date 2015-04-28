@@ -44,11 +44,11 @@ for path, path_info in api['paths'].items():
                      kwargs=None)
 
     method_args = arguments(args=[Name(id='methods', 
-                                        ctx=Param())],
-                             vararg=None,
-                             kwarg=None,
-                             defaults=[List(elts=[Str(s=meth) for meth in path_info.keys()],
-                                            ctx=Load())])
+                                       ctx=Param())],
+                            vararg=None,
+                            kwarg=None,
+                            defaults=[List(elts=[Str(s=meth) for meth in path_info.keys()],
+                                           ctx=Load())])
 
     returns = []
 

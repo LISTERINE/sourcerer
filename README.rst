@@ -1,6 +1,6 @@
-===============================
+=========
 sourcerer
-===============================
+=========
 
 .. image:: https://img.shields.io/travis/LISTERINE/sourcerer.svg
         :target: https://travis-ci.org/LISTERINE/sourcerer
@@ -16,7 +16,7 @@ Generate code from code:
 .. code-block:: python
 
     from yaml import load
-    from sourcerer import Document, FunctionDef, DecoratorDef, Return, Str, Name, Call, Assignment
+    from sourcerer import Document, FunctionDef, DecoratorDef, Return, Str, Name, Call, Assignment, Attribute
     from sys import argv
 
     # Create a document to put our code in
@@ -25,14 +25,18 @@ Generate code from code:
     # Open our yml file and read it in
     api = load(open(argv[1], 'r').read())
 
-    rapi = Assignment("rapi",
-               Call(name="Blueprint",
-                    arg_names=[Str(api['basePath'].lstrip('/')), '__name__'],
-                    kwarg_pairs={'template_folder': Str('templates')}))
-    doc.add_child(rapi)
+    blueprint = Name(api['basePath'])
+
+    bp = Assignment(blueprint,
+                    Call(name="Blueprint",
+                         arg_names=[Str(blueprint), '__name__'],
+                         kwarg_pairs={'template_folder': Str('templates')}))
+
+    doc.add_child(bp)
 
     for path in api['paths']:
-        route = [DecoratorDef(name="rapi.route", arg_names=[Str(path)]), # A decorator: @routename("mypath")
+        route = [DecoratorDef(name=Attribute(caller_list=[blueprint], name=Name('route')),
+                              arg_names=[Str(path)]), # A decorator: @routename("mypath")
                  FunctionDef(name=Name(path)), # A function: def routename():
                  Return()] # A return statement: return
 
