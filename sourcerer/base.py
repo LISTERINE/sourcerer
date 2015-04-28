@@ -212,7 +212,7 @@ class Str(Statement):
         Args:
             args (list/string): A string/list of strings to be quoted
         """
-        if isinstance(args, basestring):
+        if isinstance(args, basestring) or isinstance(args, Statement):
             return '"{}"'.format(args)
         return ['"{}"'.format(arg) for arg in args]
 

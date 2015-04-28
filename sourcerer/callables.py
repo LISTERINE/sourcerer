@@ -27,6 +27,8 @@ class FunctionDef(Statement):
             keywords (bool): Should the argument list contain **kwargs
         """
         super(FunctionDef, self).__init__(*args, **kwargs)
+        if isinstance(name, Statement):
+            name.generate()
         self.name = name
         self.arg_names = arg_names if arg_names else []
         self.kwarg_pairs = kwarg_pairs if kwarg_pairs else {}
@@ -84,25 +86,50 @@ class ClassDef(FunctionDef):
         self.header = "class {}{}:"
 
 
-class Call(FunctionDef):
-    """ Used to call functions or instantiate Classes """
+class Attribute(FunctionDef):
+    """ Used to access Object attributes """
 
     def __init__(self, caller_list=None, *args, **kwargs):
         """
         Args:
-            caller_list (list): The list of predecessor Call/Name Objects ex. [C1,f1,f2] = C1.f1().f2().self()
+            caller_list (list): The list of predecessor Objects ex. [C1,f1,f2] = C1.f1().f2().self
         """
-        super(Call, self).__init__(*args, **kwargs)
-        self.caller_list = caller_list if caller_list else []
-        self.header = "{}{}{}{}"
+        super(Attribute, self).__init__(*args, **kwargs)
+        self._caller_list = caller_list if caller_list else []
+        self.header = "{}{}"
+
+    @property
+    def caller_list(self):
+        return self.build_caller_list()
+
+    @caller_list.setter
+    def caller_list(self, value):
+        self._caller_list = value
+
+    def build_caller_list(self):
+        """ Set up the caller list for this object """
+        for call in self._caller_list:
+
+            call.generate()
+        callers = '.'.join([str(call) for call in self._caller_list])
+        return "{}{}".format(callers, '.' if callers else '')
 
     def generate(self):
-        """ Set up the args and caller list for this object """
-        for call in self.caller_list:
-            call.generate()
-        callers = '.'.join([str(call) for call in self.caller_list])
-        self.code = self.header.format(callers,
-                                       '.' if callers else '',
+        """ Format the args and caller list for this object """
+        self.code = self.header.format(self.caller_list,
+                                       self.name)
+
+
+class Call(Attribute):
+    """ Used to call functions or instantiate Classes """
+
+    def __init__(self, *args, **kwargs):
+        super(Call, self).__init__(*args, **kwargs)
+        self.header = "{}{}{}"
+
+    def generate(self):
+        """ Format the args and caller list for this object """
+        self.code = self.header.format(self.caller_list,
                                        self.name,
                                        self.arg_spec)
 

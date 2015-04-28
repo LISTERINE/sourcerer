@@ -9,7 +9,7 @@ from astunparse import unparse
 def format_name(name):
     no_vars = re.sub(r'_?\{.*?\}', '', name)
     no_doubles = no_vars.replace('//', '/')
-    no_inner = re.sub('(\w)\/(\w)', r'\1_\2', no_doubles) # replace inner slashes
+    no_inner = re.sub('(\w)\/(\w)', r'\1_\2', no_doubles)  # replace inner slashes
     return no_inner.replace("/", "")
 
 api = None
@@ -52,7 +52,7 @@ for path, path_info in api['paths'].items():
 
     returns = []
 
-    for method, method_info  in path_info.items():
+    for method, method_info in path_info.items():
         for response, response_info in method_info['responses'].items():
             returns.append(Return(value=Num(n=response)))
 
