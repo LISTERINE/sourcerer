@@ -60,7 +60,7 @@
 <div class="section" id="generate-code-from-code">
 <h2>Generate code from code:<a class="headerlink" href="#generate-code-from-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">load</span>
-<span class="kn">from</span> <span class="nn">sourcerer</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">FunctionDef</span><span class="p">,</span> <span class="n">DecoratorDef</span><span class="p">,</span> <span class="n">Return</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Call</span><span class="p">,</span> <span class="n">Assignment</span>
+<span class="kn">from</span> <span class="nn">sourcerer</span> <span class="kn">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">FunctionDef</span><span class="p">,</span> <span class="n">DecoratorDef</span><span class="p">,</span> <span class="n">Return</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Call</span><span class="p">,</span> <span class="n">Assignment</span><span class="p">,</span> <span class="n">Attribute</span>
 <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">argv</span>
 
 <span class="c"># Create a document to put our code in</span>
@@ -69,14 +69,18 @@
 <span class="c"># Open our yml file and read it in</span>
 <span class="n">api</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 
-<span class="n">rapi</span> <span class="o">=</span> <span class="n">Assignment</span><span class="p">(</span><span class="s">&quot;rapi&quot;</span><span class="p">,</span>
-           <span class="n">Call</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Blueprint&quot;</span><span class="p">,</span>
-                <span class="n">arg_names</span><span class="o">=</span><span class="p">[</span><span class="n">Str</span><span class="p">(</span><span class="n">api</span><span class="p">[</span><span class="s">&#39;basePath&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)),</span> <span class="s">&#39;__name__&#39;</span><span class="p">],</span>
-                <span class="n">kwarg_pairs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;template_folder&#39;</span><span class="p">:</span> <span class="n">Str</span><span class="p">(</span><span class="s">&#39;templates&#39;</span><span class="p">)}))</span>
-<span class="n">doc</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">rapi</span><span class="p">)</span>
+<span class="n">blueprint</span> <span class="o">=</span> <span class="n">Name</span><span class="p">(</span><span class="n">api</span><span class="p">[</span><span class="s">&#39;basePath&#39;</span><span class="p">])</span>
+
+<span class="n">bp</span> <span class="o">=</span> <span class="n">Assignment</span><span class="p">(</span><span class="n">blueprint</span><span class="p">,</span>
+                <span class="n">Call</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Blueprint&quot;</span><span class="p">,</span>
+                     <span class="n">arg_names</span><span class="o">=</span><span class="p">[</span><span class="n">Str</span><span class="p">(</span><span class="n">blueprint</span><span class="p">),</span> <span class="s">&#39;__name__&#39;</span><span class="p">],</span>
+                     <span class="n">kwarg_pairs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;template_folder&#39;</span><span class="p">:</span> <span class="n">Str</span><span class="p">(</span><span class="s">&#39;templates&#39;</span><span class="p">)}))</span>
+
+<span class="n">doc</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">bp</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">api</span><span class="p">[</span><span class="s">&#39;paths&#39;</span><span class="p">]:</span>
-    <span class="n">route</span> <span class="o">=</span> <span class="p">[</span><span class="n">DecoratorDef</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;rapi.route&quot;</span><span class="p">,</span> <span class="n">arg_names</span><span class="o">=</span><span class="p">[</span><span class="n">Str</span><span class="p">(</span><span class="n">path</span><span class="p">)]),</span> <span class="c"># A decorator: @routename(&quot;mypath&quot;)</span>
+    <span class="n">route</span> <span class="o">=</span> <span class="p">[</span><span class="n">DecoratorDef</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">Attribute</span><span class="p">(</span><span class="n">caller_list</span><span class="o">=</span><span class="p">[</span><span class="n">blueprint</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">Name</span><span class="p">(</span><span class="s">&#39;route&#39;</span><span class="p">)),</span>
+                          <span class="n">arg_names</span><span class="o">=</span><span class="p">[</span><span class="n">Str</span><span class="p">(</span><span class="n">path</span><span class="p">)]),</span> <span class="c"># A decorator: @routename(&quot;mypath&quot;)</span>
              <span class="n">FunctionDef</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">Name</span><span class="p">(</span><span class="n">path</span><span class="p">)),</span> <span class="c"># A function: def routename():</span>
              <span class="n">Return</span><span class="p">()]</span> <span class="c"># A return statement: return</span>
 
