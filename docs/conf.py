@@ -56,7 +56,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'sourcerer'
-copyright = u'2015, Jonathan Ferretti'
+copyright = u'2015'
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -210,7 +210,7 @@ latex_elements = {
 latex_documents = [
     ('index', 'sourcerer.tex',
      u'sourcerer Documentation',
-     u'Jonathan Ferretti', 'manual'),
+     u'', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at
@@ -241,7 +241,7 @@ latex_documents = [
 man_pages = [
     ('index', 'sourcerer',
      u'sourcerer Documentation',
-     [u'Jonathan Ferretti'], 1)
+     [u''], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -256,7 +256,7 @@ man_pages = [
 texinfo_documents = [
     ('index', 'sourcerer',
      u'sourcerer Documentation',
-     u'Jonathan Ferretti',
+     u'',
      'sourcerer',
      'One line description of project.',
      'Miscellaneous'),
