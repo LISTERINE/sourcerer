@@ -21,19 +21,27 @@ class FunctionDef(Statement):
         Args:
             name (str): The name of the callable
             arg_names (list): A list of  to become the positional argument names
-            kwargs (dict): A dict of str:str to become the keyword argument names/defaults
-            varargs (bool): Should the argument list contain *args
-            keywords (bool): Should the argument list contain **kwargs
+            kwarg_pairs (dict): A dict of str:str to become the keyword argument names/defaults
+            varargs (str): Name of the *args argument.
+            keywords (str): Name of the **kwargs argument.
         """
         super(FunctionDef, self).__init__(*args, **kwargs)
         if isinstance(name, Statement):
             name.generate()
         self.name = name
-        self.arg_names = arg_names if arg_names else []
-        self.kwarg_pairs = kwarg_pairs if kwarg_pairs else {}
+        self.__arg_names = arg_names if arg_names else []
+        self.__kwarg_pairs = kwarg_pairs if kwarg_pairs else {}
         self.varargs = varargs if varargs else None
         self.keywords = keywords if keywords else None
         self.header = "def {}{}:"
+
+    @property
+    def arg_names(self):
+        return [Statement.to_statement(arg) for arg in self.__arg_names]
+
+    @property
+    def kwarg_pairs(self):
+        return {Statement.to_statement(k):Statement.to_statement(v) for k,v in self.__kwarg_pairs.items()}
 
     @property
     def arg_spec(self):

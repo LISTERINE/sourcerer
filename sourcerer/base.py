@@ -216,7 +216,7 @@ class Str(Statement):
 
 
 class Num(Statement):
-    """ A number. Int or Float.
+    """ A number. Signed Int, Float, Long, whatever.
 
     n = Num("4") -> 4
 

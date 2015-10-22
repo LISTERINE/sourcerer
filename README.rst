@@ -8,11 +8,165 @@ sourcerer
 .. image:: https://img.shields.io/pypi/v/sourcerer.svg
         :target: https://pypi.python.org/pypi/sourcerer
 
-Programatically genrate python source code
+Programatically generate python source code
 
 
-Generate code from code:
+Generate code from code
 ------------------------
+
+Let's start with the absolute basics
+
+.. code-block:: python
+
+    from sourcerer import Document, Statement
+
+    # The most important class in Sourcerer is the statement. Just about everything is a statement.
+    # Statements hold source code, and have a child scope. They can hold other statements.
+    # Even a document is just a special kind of Statement.
+    # A Document job is to hold statements and then output its contents.
+    doc = Document()
+
+    # Now we make a generic statement to assign 1 to x
+    s = Statement("x = 1")
+
+    # Add it to the  document.
+    # add_child() is a member function of Statement. It will append to a Statements child scope.
+    doc.add_child(s)
+
+    # Now output the current document
+    # output() without an output_file_name will output to standard out.
+    doc.output()
+
+Output:
+
+.. code-block:: python
+
+    x = 1
+
+
+Let's use some of the purpose built tools in Sourcerer to make this easier to generate.
+
+.. code-block:: python
+
+    from sourcerer import Document, Name,
+
+    doc = Document()
+
+    # Names are variable/function/class/etc... names
+    # We'll use a good name
+    good_name = Name("descriptive_name")
+    # and a bad name
+    bad_name = Name("1@*plz_help")
+
+    # Add both the children at once
+    doc.add_children([good_name, bad_name])
+
+    doc.output()
+
+Output:
+
+.. code-block:: python
+
+    descriptive_name
+    plz_help
+
+Notice the bad name has been transformed into a valid python name, this behavior can be turned off by setting validate=False
+
+Let's get back to that naive assignment we first made. We can improve it using Name and Assignment. We'll also use Num just for good practice.
+
+.. code-block:: python
+
+    from sourcerer import Document, Name, Assignment, Num
+
+    doc = Document()
+
+    # We'll wrap this up in one line because it's not that long.
+    # Num can take a string, signed int, long, float, etc...
+    a = Assignment(Name("x"), Num("1"))
+
+    doc.add_child(a)
+
+    doc.output()
+
+Output: 
+
+.. code-block:: python
+
+    x = 1
+
+Now that we're warmed up, let's do something more interesting. How about some functions?
+
+.. code-block:: python
+
+    from sourcerer import Document, FunctionDef, Return, Str, Num, Name, Assignment, DecoratorDef, Call
+    
+    doc = Document()
+    
+    # A function that returns 0
+    func_a = FunctionDef(name=Name("get_a_zero"))
+    ret_a = Return(Num("0"))
+    
+    func_a.add_child(ret_a)
+    doc.add_child(func_a)
+    
+    # A function that passes. We'll put it in an list for easier consumption later
+    func_b = [FunctionDef(name=Name("just_pass")),
+              Return(_type="pass")
+    ]
+    
+    # Cascade the list of statements
+    doc.create_lineage(func_b)
+    
+    # A function with args, and a *arg
+    func_c = [FunctionDef(name=Name("so_many_args"), arg_names=["a1", Name("a2")], varargs="args"),
+              Return(Str("Not enough time"))
+    ]
+    
+    doc.create_lineage(func_c)
+    
+    # A function with kwargs, and a **
+    func_d = [FunctionDef(name=Name("so_many_kwargs"), kwarg_pairs={Name("a1"):"val"}, keywords="kwargs"),
+              Return()
+    ]
+    
+    doc.create_lineage(func_d)
+    
+    # A function decorated function. Philosophy: If things get complicated, just make them a list.
+    func_e = [DecoratorDef(name=Name("fancy")),
+              FunctionDef(name=Name("pants")),
+              Return(Str("Hello World!"))
+    ]
+    
+    doc.create_lineage(func_e)
+    
+    doc.output()
+
+Output:
+
+.. code-block:: python
+
+    def get_a_zero():
+        return 0
+
+
+    def just_pass():
+        pass
+
+
+    def so_many_args(a1, a2, *args):
+        return "Not enough time"
+
+
+    def so_many_kwargs(a1=val, **kwargs):
+        return
+
+
+    @fancy()
+    def pants():
+        return "Hello World!"
+
+Here is an example that generates an extremely rough flask Blueprint from a swagger (http://swagger.io/) yml doc
+
 .. code-block:: python
 
     from yaml import load

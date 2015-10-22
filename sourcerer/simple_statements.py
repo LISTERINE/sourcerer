@@ -8,7 +8,7 @@ class Return(Statement):
     def __init__(self, val=None, _type='return', *args, **kwargs):
         """
         Args:
-            _type (string): type of terminator. Should be one of: return, pass, '' (or None)
+            _type (string): type of terminator. Should be one of: 'return', 'pass', '' (or None)
             val (Statement): The Statement that is to be returned
         """
         super(Return, self).__init__(*args, **kwargs)
