@@ -10,6 +10,13 @@ sourcerer
 
 Programatically generate python source code
 
+Running examples
+----------------
+
+.. code-block:: shell
+
+    shark@tack ~/sourcerer/examples $ python swagger_to_flask.py ../sample_data/uber.yaml
+    shark@tack ~/sourcerer/examples $ python call_example.py
 
 Generate code from code
 ------------------------
