@@ -20,7 +20,7 @@ class Document(Statement):
 
         syntax_string = ''.join(self)
         if yapf:
-            syntax_string = FormatCode(syntax_string)
+            syntax_string = FormatCode(syntax_string)[0]
         if not output_file_name:
             stdout.write(syntax_string)
         else:
