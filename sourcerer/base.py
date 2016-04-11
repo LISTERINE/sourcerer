@@ -4,8 +4,8 @@ import re
 
 
 class Statement(object):
-    """ A line of code 
-    
+    """ A line of code
+
     A Statement is a line of code that may or may not have a child Scope
     """
 
@@ -38,8 +38,8 @@ class Statement(object):
         return self.code
 
     def add_child(self, child):
-        """ Append a child to this statements scope 
-        
+        """ Append a child to this statements scope
+
         Args:
             child (Statement): The child to append
         """
@@ -80,8 +80,8 @@ class Statement(object):
                     current_node = child
 
     def from_parent(self, parent):
-        """ Append this statement to a parents scope 
-        
+        """ Append this statement to a parents scope
+
         Args:
             parent (Statement): The aprrent to be appended to
         """
@@ -99,7 +99,7 @@ class Statement(object):
                   |->p2
                      |->p3
                         |->self
-        In this example the top level parent would be at scope level n+1 and 
+        In this example the top level parent would be at scope level n+1 and
         this object would be at scope level n+4.
 
         Args:
@@ -126,8 +126,8 @@ class Statement(object):
         return self.render(*args, **kwargs)
 
     def render(self, level=-1, increment=1):
-        """ Return this statement and all children recursively 
-        
+        """ Return this statement and all children recursively
+
         Args:
             level (int): The indentation level to set for this statement
             increment (int): The number of indentation levels for the child scope
@@ -195,24 +195,30 @@ class Name(Statement):
 class Str(Statement):
     """ A quoted string
 
+    Args:
+        single (bool): Should use single quotes?
+
     s = Str("hello world") -> literal 'hello world'
     """
 
-    def __init__(self, code, *args, **kwargs):
+    def __init__(self, code, single=False, *args, **kwargs):
         super(Str, self).__init__(*args, **kwargs)
-        self.code = self.string_args(code)
+        self.code = self.string_args(code, single)
 
     @staticmethod
-    def string_args(args):
+    def string_args(args, single):
         """ Enclose your positional arguments in strings so it can be used as an
         argument, rather than part of the arg spec.
 
         Args:
             args (list/string): A string/list of strings to be quoted
         """
+        base = '"{}"'
+        if single:
+            base = "'{}'"
         if isinstance(args, basestring) or isinstance(args, Statement):
-            return '"{}"'.format(args)
-        return ['"{}"'.format(arg) for arg in args]
+            return base.format(args)
+        return [base.format(arg) for arg in args]
 
 
 class Num(Statement):
