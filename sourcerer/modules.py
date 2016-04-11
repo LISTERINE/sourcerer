@@ -15,12 +15,12 @@ class Document(Statement):
         super(Document, self).__init__(*args, **kwargs)
         self.line_ending = ''
 
-    def output(self, output_file_name='', yapf=True):
+    def output(self, output_file_name='', yapf=True, **yapfkwargs):
         """ Write out the syntax tree """
 
         syntax_string = ''.join(self)
         if yapf:
-            syntax_string = FormatCode(syntax_string)[0]
+            syntax_string = FormatCode(syntax_string, **yapfkwargs)[0]
         if not output_file_name:
             stdout.write(syntax_string)
         else:
