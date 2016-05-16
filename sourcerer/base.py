@@ -9,7 +9,7 @@ class Statement(object):
     A Statement is a line of code that may or may not have a child Scope
     """
 
-    def __init__(self, code='', scope=None, whitespace='', line_ending='\n'):
+    def __init__(self, code='', scope=None, whitespace='', line_ending=''):
         """
         self.code is the actual line of code that this object represents.
         self.scope (if any) is the child scope of this statement. eg.
@@ -32,9 +32,11 @@ class Statement(object):
             yield node
 
     def __str__(self):
+        return self.line_ending.join(self)
         return self.code
 
     def __repr__(self):
+        return self.line_ending.join(self)
         return self.code
 
     def add_child(self, child):
@@ -132,11 +134,13 @@ class Statement(object):
             level (int): The indentation level to set for this statement
             increment (int): The number of indentation levels for the child scope
         """
+        self.format()
+        self.generate()
         yield "{}{}{}".format(self.whitespace * level, self.code,
                               self.line_ending)
         for child in self.scope:
-            child.format()
-            child.generate()
+            #child.format()
+            #child.generate()
             child_renderer = child.build_renderer(level=level + increment)
             while 1:
                 try:
@@ -178,6 +182,7 @@ class Name(Statement):
     """
     def __init__(self, code, validate=True, *args, **kwargs):
         super(Name, self).__init__(*args, **kwargs)
+        self.line_ending = ''
         self.code = self.make_valid(code) if validate else code
 
     @staticmethod
@@ -203,6 +208,7 @@ class Str(Statement):
 
     def __init__(self, code, single=False, *args, **kwargs):
         super(Str, self).__init__(*args, **kwargs)
+        self.line_ending = ''
         self.code = self.string_args(code, single)
 
     @staticmethod
@@ -233,4 +239,5 @@ class Num(Statement):
 
     def __init__(self, code, *args, **kwargs):
         super(Num, self).__init__(*args, **kwargs)
+        self.line_ending = ''
         self.code = str(code)

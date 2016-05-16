@@ -12,6 +12,8 @@ from sourcerer import Statement, Name
 from inspect import isgenerator
 import pytest
 
+# Test Base
+
 
 class TestStatment():
 
@@ -20,7 +22,7 @@ class TestStatment():
         assert s.code == ''
         assert s.scope == []
         assert s.whitespace == '    '
-        assert s.line_ending == '\n'
+        assert s.line_ending == ''
 
     def test_add_child(self):
         s = Statement()
@@ -79,8 +81,8 @@ class TestStatment():
         s3 = Statement(code='print "done"')
         s_base.create_lineage([s,s2])
         s_base.add_child(s3)
-        test_code = ''.join(s_base)
-        train_code = '\nfor i in range(10):\n    print i\nprint "done"\n'
+        test_code = '\n'.join(s_base) # join with \n to replicate a document output
+        train_code = '\nfor i in range(10):\n    print i\nprint "done"'
         assert test_code == train_code
 
     def test_to_statement(self):
@@ -135,3 +137,55 @@ class TestName():
     def test_dont_validate(self):
         for invalid in self.invalid_mixed_function_names:
             assert Name(invalid, validate=False).__str__() == invalid
+
+
+class TestStr():
+    pass
+
+
+class TestNum():
+    pass
+
+
+
+
+# Test Callables
+class TestFunctionDef():
+    pass
+
+
+class TestDecoratorDef():
+    pass
+
+
+class TestClassDef():
+    pass
+
+
+class TestAttribute():
+    pass
+
+
+class TestCall():
+    pass
+
+
+# Test Modules
+
+
+class TestDocument():
+    pass
+
+# Test Simple Statements
+
+
+class TestReturn():
+    pass
+
+
+class TestDocString():
+    pass
+
+
+class TestAssignment():
+    pass
