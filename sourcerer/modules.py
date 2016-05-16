@@ -8,17 +8,17 @@ from pdb import set_trace
 class Document(Statement):
     """ All content is rooted in this base document
 
-    All a document really is, is a statement with a blank line ending and an output method.
+    All a document really is, is a statement with a \\n line ending and an output method.
     """
 
     def __init__(self, *args, **kwargs):
         super(Document, self).__init__(*args, **kwargs)
-        self.line_ending = ''
+        self.line_ending = '\n'
 
     def output(self, output_file_name='', yapf=True, **yapfkwargs):
         """ Write out the syntax tree """
 
-        syntax_string = ''.join(self)
+        syntax_string = self.line_ending.join(self)
         if yapf:
             syntax_string = FormatCode(syntax_string, **yapfkwargs)[0]
         if not output_file_name:
