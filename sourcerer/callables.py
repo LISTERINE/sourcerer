@@ -1,7 +1,7 @@
 #!env/bin/python
 
-from base import Statement
-from formatters import CallFormatter
+from .base import Statement
+from .formatters import CallFormatter
 import inspect
 from pdb import set_trace
 
@@ -41,7 +41,7 @@ class FunctionDef(Statement):
 
     @property
     def kwarg_pairs(self):
-        return {Statement.to_statement(k):Statement.to_statement(v) for k,v in self.__kwarg_pairs.items()}
+        return {Statement.to_statement(k):Statement.to_statement(v) for k,v in list(self.__kwarg_pairs.items())}
 
     @property
     def arg_spec(self):
@@ -49,8 +49,8 @@ class FunctionDef(Statement):
 
     def build_args_kwargs(self):
         """ Build the argspec for the function """
-        args = self.arg_names + self.kwarg_pairs.keys()
-        kwargs = self.kwarg_pairs.values()
+        args = self.arg_names + list(self.kwarg_pairs.keys())
+        kwargs = list(self.kwarg_pairs.values())
         spec = inspect.ArgSpec(args=args,
                                varargs=self.varargs,
                                keywords=self.keywords,

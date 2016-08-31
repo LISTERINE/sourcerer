@@ -29,14 +29,14 @@ class DefaultProcessor(object):
             if file_name is not None:
                 with open(file_name, 'r') as my_file:
                     parsed_data = self.parser(my_file)
-                for section, objects in parsed_data.items():
+                for section, objects in list(parsed_data.items()):
                     self.doc.add_children(self.assemble(section, objects))
 
     def assemble(self, object_type, parsed_data):
         """ Process all the nodes in a parsed input document """
         code_objects = []
-        if object_type in self.syntax.keys():
-            for object_id, object_parameters in parsed_data.items():
+        if object_type in list(self.syntax.keys()):
+            for object_id, object_parameters in list(parsed_data.items()):
                 code_obj_class = self.syntax[object_type]['type']
                 args, children = self.extract_parameters(object_type,
                                                          object_id,
@@ -60,10 +60,10 @@ class DefaultProcessor(object):
         child_map = self.syntax[obj_type].get('children', {})  # Syntax Map child_map for this code object
         code_obj_args = {}
         child_code_objs = []
-        for param, param_value in parameters.items():
-            if param in value_map.keys():
+        for param, param_value in list(parameters.items()):
+            if param in list(value_map.keys()):
                 code_obj_args[value_map[param]] = param_value
-            elif param in child_map.keys():
+            elif param in list(child_map.keys()):
                 child = self.assemble(child_map[param], {param: {child_map[param]: param_value}})
                 child_code_objs.extend(child)
         return code_obj_args, child_code_objs

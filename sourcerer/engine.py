@@ -62,7 +62,7 @@ class Generator(object):
         """ Return StopIteration from build generator and reset parameters """
         self.finished = True
         self.tab_depth = 0
-        self.build.next()
+        next(self.build)
 
     def new_file(self, filename=None):
         """ Reset generator with new output file
