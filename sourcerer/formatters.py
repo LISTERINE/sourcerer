@@ -26,7 +26,7 @@ class Formatter(object):
         Args:
             syntax_obj (object): The object with the attributes to be formatted
         """
-        for prop_name, value in syntax_obj.__dict__.items():
+        for prop_name, value in list(syntax_obj.__dict__.items()):
             try:
                 formatter = getattr(cls, prop_name)
 
@@ -34,9 +34,9 @@ class Formatter(object):
             except AttributeError:
                 pass
             except Exception as e:
-                print format_exc()
-                print e
-                print syntax_obj, '->', prop_name
+                print(format_exc())
+                print(e)
+                print(syntax_obj, '->', prop_name)
 
 
 class NameFormatter(Formatter):

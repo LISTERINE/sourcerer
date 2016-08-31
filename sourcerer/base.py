@@ -144,7 +144,7 @@ class Statement(object):
             child_renderer = child.build_renderer(level=level + increment)
             while 1:
                 try:
-                    yield child_renderer.next()
+                    yield next(child_renderer)
                 except StopIteration:
                     break
 
@@ -158,7 +158,7 @@ class Statement(object):
         Args:
             item (str, Statement): The object to be converted to a Statement
         """
-        if isinstance(item, basestring):
+        if isinstance(item, str):
             item = Statement(item)
         elif isinstance(item, Statement):
             pass
@@ -222,7 +222,7 @@ class Str(Statement):
         base = '"{}"'
         if single:
             base = "'{}'"
-        if isinstance(args, basestring) or isinstance(args, Statement):
+        if isinstance(args, str) or isinstance(args, Statement):
             return base.format(args)
         return [base.format(arg) for arg in args]
 

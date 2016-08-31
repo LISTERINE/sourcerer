@@ -1,4 +1,4 @@
-from base import Statement
+from .base import Statement
 from pdb import set_trace
 
 
@@ -19,7 +19,7 @@ class Return(Statement):
     def generate(self):
         self.val.generate()
         val = self.val.render()
-        self.code = ' '.join([self._type, val.next()])
+        self.code = ' '.join([self._type, next(val)])
 
 
 class Docstring(Statement):
