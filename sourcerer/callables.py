@@ -1,7 +1,6 @@
 #!env/bin/python
 
 from .base import Statement
-from .formatters import CallFormatter
 import inspect
 
 
