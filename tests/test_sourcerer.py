@@ -8,7 +8,7 @@ test_sourcerer
 Tests for `sourcerer` module.
 """
 
-from sourcerer import Statement, Name
+from sourcerer import Statement, Name, Str, Num, FunctionDef, DecoratorDef, ClassDef, Attribute, Call
 from inspect import isgenerator
 import pytest
 
@@ -140,34 +140,119 @@ class TestName():
 
 
 class TestStr():
-    pass
+
+    def test_str_double(self):
+        assert Str("hello").__str__() == '"hello"'
+
+    def test_str_complex_double(self):
+        assert Str("h'el*l\"o").__str__() == '"h\'el*l\\"o"'
+
+    def test_str_single(self):
+        assert Str("hello", True).__str__() == "'hello'"
+
+    def test_str_complex_single(self):
+        assert Str("h'el*l\"o", True).__str__() == '\'h\\\'el*l"o\''
 
 
 class TestNum():
-    pass
+    def test_string_to_num(self):
+        assert Num("6").__str__() == "6"
 
+    def test_int_to_num(self):
+        assert Num(6).__str__() == "6"
 
+    def test_signed_to_num(self):
+        assert Num(-6).__str__() == "-6"
+
+    def test_float_to_num(self):
+        assert Num(6.6).__str__() == "6.6"
+
+    def test_long_to_num(self):
+        assert Num(long(6)).__str__() == "6"
+
+    def test_complex_to_num(self):
+        assert Num(6j).__str__() == "6j"
 
 
 # Test Callables
 class TestFunctionDef():
-    pass
+
+    def test_function_name(self):
+        assert FunctionDef(name="func").__str__() == 'def func():'
+
+    def test_arg_names(self):
+        assert FunctionDef(name="func",
+                           arg_names=["a1", "a2"]).__str__() == 'def func(a1, a2):'
+
+    def test_kwarg_pairs(self):
+        assert FunctionDef(name="func",
+                           kwarg_pairs={"a1":Str("a2")}).__str__() == 'def func(a1="a2"):'
+
+    def test_star_args(self):
+        assert FunctionDef(name="func",
+                           varargs="args").__str__() == 'def func(*args):'
+
+    def test_sskwargs(self):
+        assert FunctionDef(name="func",
+                           keywords="kwargs").__str__() == 'def func(**kwargs):'
 
 
 class TestDecoratorDef():
-    pass
+
+    def test_function_name(self):
+        assert DecoratorDef(name="func").__str__() == '@func()'
+
+    def test_arg_names(self):
+        assert DecoratorDef(name="func",
+                           arg_names=["a1", "a2"]).__str__() == '@func(a1, a2)'
+
+    def test_kwarg_pairs(self):
+        assert DecoratorDef(name="func",
+                           kwarg_pairs={"a1":Str("a2")}).__str__() == '@func(a1="a2")'
+
+    def test_star_args(self):
+        assert DecoratorDef(name="func",
+                           varargs="args").__str__() == '@func(*args)'
+
+    def test_sskwargs(self):
+        assert DecoratorDef(name="func",
+                           keywords="kwargs").__str__() == '@func(**kwargs)'
 
 
 class TestClassDef():
-    pass
+
+    def test_function_name(self):
+        assert ClassDef(name="cls").__str__() == 'class cls():'
+
+    def test_arg_names(self):
+        assert ClassDef(name="cls",
+                           arg_names=["a1", "a2"]).__str__() == 'class cls(a1, a2):'
+
+    def test_kwarg_pairs(self):
+        assert ClassDef(name="cls",
+                           kwarg_pairs={"a1":Str("a2")}).__str__() == 'class cls(a1="a2"):'
+
+    def test_star_args(self):
+        assert ClassDef(name="cls",
+                           varargs="args").__str__() == 'class cls(*args):'
+
+    def test_sskwargs(self):
+        assert ClassDef(name="cls",
+                           keywords="kwargs").__str__() == 'class cls(**kwargs):'
 
 
 class TestAttribute():
-    pass
+
+    def test_obj_chain(self):
+        assert Attribute(name="thing",
+                         caller_list=['a', Statement('b'), 'c']).__str__() == 'a.b.c.thing'
 
 
 class TestCall():
-    pass
+
+    def test_call_no_args(self):
+        assert Call(name="thing",
+                    caller_list=['a', Statement('b'), 'c']).__str__() == 'a.b.c.thing()'
 
 
 # Test Modules

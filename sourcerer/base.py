@@ -1,6 +1,6 @@
 #!env/bin/python
-from pdb import set_trace
 import re
+from numbers import Number
 
 
 class Statement(object):
@@ -166,6 +166,17 @@ class Statement(object):
             item = Statement()
         return item
 
+    @staticmethod
+    def make_valid(name):
+        """ Convert a string to a valid python name
+
+        Args:
+            name (string): The name to be converted
+        """
+        name = re.sub('[^0-9a-zA-Z_]', '', name)  # Remove invalid characters
+        name = re.sub('^[^a-zA-Z_]+', '', name)   # Remove leading characters until we find a letter or underscore
+        return name
+
 
 class Name(Statement):
     """ A variable/function/class/... name
@@ -185,17 +196,6 @@ class Name(Statement):
         self.line_ending = ''
         self.code = self.make_valid(code) if validate else code
 
-    @staticmethod
-    def make_valid(name):
-        """ Convert a string to a valid python name
-
-        Args:
-            name (string): The name to be converted
-        """
-        name = re.sub('[^0-9a-zA-Z_]', '', name)  # Remove invalid characters
-        name = re.sub('^[^a-zA-Z_]+', '', name)   # Remove leading characters until we find a letter or underscore
-        return name
-
 
 class Str(Statement):
     """ A quoted string
@@ -213,18 +213,22 @@ class Str(Statement):
 
     @staticmethod
     def string_args(args, single):
-        """ Enclose your positional arguments in strings so it can be used as an
-        argument, rather than part of the arg spec.
+        """ Apply single or double quotes to the strings provided.
 
         Args:
-            args (list/string): A string/list of strings to be quoted
+            args (string): A string to be quoted
+            single (bool): Use single quotes rather than double
         """
+
         base = '"{}"'
+        quote_type = '"'
         if single:
             base = "'{}'"
+            quote_type = "'"
+        escaped = "\\{}".format(quote_type)
         if isinstance(args, str) or isinstance(args, Statement):
+            args = args.replace(quote_type, escaped)
             return base.format(args)
-        return [base.format(arg) for arg in args]
 
 
 class Num(Statement):
