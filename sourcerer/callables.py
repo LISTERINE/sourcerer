@@ -3,7 +3,6 @@
 from .base import Statement
 from .formatters import CallFormatter
 import inspect
-from pdb import set_trace
 
 
 class FunctionDef(Statement):
@@ -98,24 +97,19 @@ class Attribute(FunctionDef):
             caller_list (list): The list of predecessor Objects ex. [C1,f1,f2] = C1.f1().f2().self
         """
         super(Attribute, self).__init__(*args, **kwargs)
-        self._caller_list = caller_list if caller_list else []
+        self.caller_list = caller_list if caller_list else []
         self.header = "{}{}"
 
     @property
     def caller_list(self):
-        return self.build_caller_list()
+        for call in self._caller_list:
+            call.generate()
+        callers = '.'.join(str(call) for call in self._caller_list)
+        return "{}{}".format(callers, '.' if callers else '')
 
     @caller_list.setter
     def caller_list(self, value):
-        self._caller_list = value
-
-    def build_caller_list(self):
-        """ Set up the caller list for this object """
-        for call in self._caller_list:
-
-            call.generate()
-        callers = '.'.join([str(call) for call in self._caller_list])
-        return "{}{}".format(callers, '.' if callers else '')
+        self._caller_list = [Statement.to_statement(obj) for obj in value]
 
     def generate(self):
         """ Format the args and caller list for this object """
@@ -135,6 +129,3 @@ class Call(Attribute):
         self.code = self.header.format(self.caller_list,
                                        self.name,
                                        self.arg_spec)
-
-    def format(self):
-        CallFormatter.apply(self)
