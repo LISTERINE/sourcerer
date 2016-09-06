@@ -8,7 +8,7 @@ test_sourcerer
 Tests for `sourcerer` module.
 """
 
-from sourcerer import Statement, Name, Str, Num, FunctionDef, DecoratorDef, ClassDef, Attribute, Call, Document
+from sourcerer import Statement, Name, Str, Num, FunctionDef, DecoratorDef, ClassDef, Attribute, Call, Document, Return
 from inspect import isgenerator
 import pytest
 
