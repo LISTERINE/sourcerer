@@ -1,6 +1,6 @@
 #!env/bin/python
 
-from .base import Statement
+from .base import Statement, Name
 import inspect
 
 
@@ -29,9 +29,17 @@ class FunctionDef(Statement):
         self.name = name
         self.__arg_names = arg_names if arg_names else []
         self.__kwarg_pairs = kwarg_pairs if kwarg_pairs else {}
-        self.varargs = varargs if varargs else None
-        self.keywords = keywords if keywords else None
+        self.varargs = str(Name(varargs)) if varargs else None
+        self.keywords = str(Name(keywords)) if keywords else None
         self.header = "def {}{}:"
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = Name(value)
 
     @property
     def arg_names(self):
@@ -47,12 +55,13 @@ class FunctionDef(Statement):
 
     def build_args_kwargs(self):
         """ Build the argspec for the function """
-        args = self.arg_names + list(self.kwarg_pairs.keys())
-        kwargs = list(self.kwarg_pairs.values())
+        kwarg_args, kwarg_vals = zip(*self.kwarg_pairs.items())
+        args = self.arg_names[:]
+        args.extend(kwarg_args)
         spec = inspect.ArgSpec(args=args,
                                varargs=self.varargs,
                                keywords=self.keywords,
-                               defaults=kwargs)
+                               defaults=kwarg_vals)
         return inspect.formatargspec(*spec)
 
     def generate(self):
@@ -68,8 +77,17 @@ class DecoratorDef(FunctionDef):
     result will look like '@fn(...)'
     """
 
-    def __init__(self, *args, **kwargs):
+    @FunctionDef.name.getter
+    def name(self):
+        return self._name
+
+    @FunctionDef.name.setter
+    def name(self, value):
+        self._name = value
+
+    def __init__(self, name='', *args, **kwargs):
         super(DecoratorDef, self).__init__(*args, **kwargs)
+        self.name = name
         self.header = "@{}{}"
 
     def build_renderer(self, *args, **kwargs):
@@ -89,6 +107,17 @@ class ClassDef(FunctionDef):
 
 class Attribute(FunctionDef):
     """ Used to access Object attributes """
+
+    @FunctionDef.name.getter
+    def name(self):
+        return self._name
+
+    @FunctionDef.name.setter
+    def name(self, value):
+        if isinstance(value, Statement):
+            self._name = value
+        else:
+			self._name = Name(value)
 
     def __init__(self, caller_list=None, *args, **kwargs):
         """
