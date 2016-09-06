@@ -6,7 +6,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-with open('README.rst') as readme_file:
+with open('README.md') as readme_file:
     readme = readme_file.read()
 
 with open('HISTORY.rst') as history_file:
@@ -19,7 +19,7 @@ test_requirements = [  # TODO: put package test requirements here
 ]
 
 setup(name='sourcerer',
-      version="1.0b3",
+      version="1.0b5",
       author="Jonathan Ferretti",
       author_email="jon@jonathanferretti.com",
       description="Library to programatically genrate python source code",
