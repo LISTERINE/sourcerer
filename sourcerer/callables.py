@@ -55,9 +55,12 @@ class FunctionDef(Statement):
 
     def build_args_kwargs(self):
         """ Build the argspec for the function """
-        kwarg_args, kwarg_vals = zip(*self.kwarg_pairs.items())
-        args = self.arg_names[:]
-        args.extend(kwarg_args)
+        kwarg_args = []
+        kwarg_vals = []
+        for key, val in self.kwarg_pairs.items():
+            kwarg_args.append(key)
+            kwarg_vals.append(val)
+        args = self.arg_names + kwarg_args
         spec = inspect.ArgSpec(args=args,
                                varargs=self.varargs,
                                keywords=self.keywords,
