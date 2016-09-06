@@ -152,19 +152,16 @@ class Statement(object):
     def to_statement(item):
         """ Convert a string to a Statement
 
-        If the argument passed is already a Statement, return it unaltered
-        If the argument passed is a Non-string or statement, return an empty Statement
+        If the argument passed is already a Statement or Statment derivitive, return it unaltered
+        If the argument passed is a Non-Statment, return input as a Statement
 
         Args:
             item (str, Statement): The object to be converted to a Statement
         """
-        if isinstance(item, str):
-            item = Statement(item)
-        elif isinstance(item, Statement):
-            pass
+        if isinstance(item, Statement):
+            return item
         else:
-            item = Statement()
-        return item
+            return Statement(item)
 
     @staticmethod
     def make_valid(name):
@@ -173,8 +170,8 @@ class Statement(object):
         Args:
             name (string): The name to be converted
         """
-        name = re.sub('[^0-9a-zA-Z_]', '', name)  # Remove invalid characters
-        name = re.sub('^[^a-zA-Z_]+', '', name)   # Remove leading characters until we find a letter or underscore
+        name = re.sub('[^0-9a-zA-Z_]', '', str(name))  # Remove invalid characters
+        name = re.sub('^[^a-zA-Z_]+', '', str(name))   # Remove leading characters until we find a letter or underscore
         return name
 
 
@@ -211,8 +208,7 @@ class Str(Statement):
         self.line_ending = ''
         self.code = self.string_args(code, single)
 
-    @staticmethod
-    def string_args(args, single):
+    def string_args(self, args, single):
         """ Apply single or double quotes to the strings provided.
 
         Args:
@@ -220,15 +216,17 @@ class Str(Statement):
             single (bool): Use single quotes rather than double
         """
 
-        base = '"{}"'
-        quote_type = '"'
+        self.base = '"{}"'
+        self.quote_type = '"'
         if single:
-            base = "'{}'"
-            quote_type = "'"
-        escaped = "\\{}".format(quote_type)
+            self.base = "'{}'"
+            self.quote_type = "'"
+        escaped = "\\{}".format(self.quote_type)
+        if isinstance(args, Str):
+			args = str(args).strip(args.quote_type)
         if isinstance(args, str) or isinstance(args, Statement):
-            args = args.replace(quote_type, escaped)
-            return base.format(args)
+            args = str(args).replace(self.quote_type, escaped)
+            return self.base.format(args)
 
 
 class Num(Statement):

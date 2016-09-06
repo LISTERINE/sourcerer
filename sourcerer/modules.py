@@ -22,7 +22,7 @@ class Document(Statement):
         if yapf:
             syntax_string = FormatCode(syntax_string, **yapfkwargs)[0]
         if not output_file_name:
-            stdout.write(syntax_string)
+            return syntax_string
         else:
             with open(output_file_name, 'w') as output:
                 output.write(syntax_string)
