@@ -19,7 +19,7 @@ test_requirements = [  # TODO: put package test requirements here
 ]
 
 setup(name='sourcerer',
-      version="1.0b6",
+      version="1.0b7",
       author="Jonathan Ferretti",
       author_email="jon@jonathanferretti.com",
       description="Library to programatically genrate python source code",
