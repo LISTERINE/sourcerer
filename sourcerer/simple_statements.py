@@ -5,10 +5,10 @@ from pdb import set_trace
 class Return(Statement):
     """ Terminate a function """
 
-    def __init__(self, val=None, _type='return', *args, **kwargs):
+    def __init__(self, val='', _type='return', *args, **kwargs):
         """
         Args:
-            _type (string): type of terminator. Should be one of: 'return', 'pass', '' (or None)
+            _type (string): type of terminator. Should be one of: 'return', , 'yield', 'pass', '' (or None)
             val (Statement): The Statement that is to be returned
         """
         super(Return, self).__init__(*args, **kwargs)
@@ -16,10 +16,13 @@ class Return(Statement):
         self.val = Statement.to_statement(val)
         self.line_ending = ''
 
+
     def generate(self):
         self.val.generate()
-        val = self.val.render()
-        self.code = ' '.join([self._type, next(val)])
+        val = [v for v in self.val.render() if v]
+        rendered_return = [self._type]
+        rendered_return.extend(val)
+        self.code = ' '.join(rendered_return)
 
 
 class Docstring(Statement):
