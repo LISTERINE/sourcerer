@@ -1,6 +1,6 @@
 #!env/bin/python
 from sourcerer import Statement
-from sys import stdout
+from sys import stderr
 from yapf.yapflib.yapf_api import FormatCode
 from pdb import set_trace
 
@@ -24,7 +24,9 @@ class Document(Statement):
         if not output_file_name:
             return syntax_string
         else:
-            with open(output_file_name, 'w') as output:
-                output.write(syntax_string)
-
-
+            try:
+                with open(output_file_name, 'w') as output:
+                    output.write(syntax_string)
+            except (IOError, OSError) as e:
+                stderr.write(str(e))
+                raise

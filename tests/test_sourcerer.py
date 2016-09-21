@@ -8,7 +8,7 @@ test_sourcerer
 Tests for `sourcerer` module.
 """
 
-from sourcerer import Statement, Name, Str, Num, FunctionDef, DecoratorDef, ClassDef, Attribute, Call, Document, Return
+from sourcerer import Statement, Name, Str, Num, FunctionDef, DecoratorDef, ClassDef, Attribute, Call, Document, Return, Docstring, Assignment
 from inspect import isgenerator
 import pytest
 
@@ -93,6 +93,43 @@ class TestStatment():
         assert isinstance(from_string, Statement)
         assert from_state is init
         assert isinstance(from_int, Statement)
+
+    def test_to_statement(self):
+        assert Statement("TEST").__str__() == "TEST"
+
+    def test_to_statement_type(self):
+        assert isinstance(Statement("TEST"), Statement)
+
+    def test_to_statement_identity(self):
+        s = Statement("TEST")
+        assert s is Statement.to_statement(s)
+
+    def test_to_statement_name(self):
+        assert Statement(Name("TEST")).__str__() == "TEST"
+
+    def test_to_statement_num(self):
+        assert Statement(Num(4)).__str__() == "4"
+
+    def test_to_statement_func(self):
+        assert Statement(FunctionDef(name="func",
+                                     arg_names=['a','b'],
+                                     kwarg_pairs={"x":"y"},
+                                     varargs="args",
+                                     keywords="kwargs")).__str__() == "def func(a, b, x=y, *args, **kwargs):"
+
+    def test_to_statement_decorator(self):
+        assert Statement(DecoratorDef(name="func")).__str__() == '@func()'
+
+    def test_to_statement_class(self):
+        assert Statement(ClassDef(name="cls")).__str__() == 'class cls():'
+
+    def test_to_statement_attribute(self):
+        assert Statement(Attribute(name="thing",
+                         caller_list=['a', 'b', 'c'])).__str__() == 'a.b.c.thing'
+
+    def test_to_statement_call(self):
+        assert Statement(Call(name="thing",
+                    caller_list=['a', Statement('b'), 'c'])).__str__() == 'a.b.c.thing()'
 
 
 class TestName():
@@ -432,23 +469,76 @@ class TestCall():
         assert Call(name="thing",
                     caller_list=['a', Statement('b'), 'c']).__str__() == 'a.b.c.thing()'
 
+    def test_call_str_args(self):
+        assert Call(name="thing",
+                    caller_list=['a', 'b', 'c'],
+                    arg_names=['x', 'y'],
+                    kwarg_pairs={'a1':'1'}).__str__() == 'a.b.c.thing(x, y, a1=1)'
 
 # Test Modules
 
 
 class TestDocument():
-    pass
+
+    def test_doc(self):
+        d = Document()
+        d.add_child(Statement("1 == 1"))
+        assert d.output().__str__() == '1 == 1\n'
+
+    def test_yapf(self):
+        d = Document()
+        d.add_child(Statement("1==1"))
+        assert d.output().__str__() == '1 == 1\n'
 
 # Test Simple Statements
 
 
 class TestReturn():
-    pass
+
+    def test_return_empty(self):
+        assert Return().__str__() == 'return'
+
+    def test_return(self):
+        assert Return("test").__str__() == 'return test'
+
+    def test_yield_empty(self):
+        assert Return(_type="yield").__str__() == 'yield'
+
+    def test_yield(self):
+        assert Return("test", _type="yield").__str__() == 'yield test'
+
+    def test_pass(self):
+        assert Return(_type="pass").__str__() == 'pass'
+
+    def test_return_statement(self):
+        assert Return(Statement("test")).__str__() == 'return test'
+
+    def test_return_call(self):
+        c = Call(name="thing", caller_list=['a', Statement('b'), 'c'], arg_names=['x'])
+        assert Return(c).__str__() == 'return a.b.c.thing(x)'
 
 
 class TestDocString():
-    pass
+
+    def test_docstring(self):
+        assert Docstring("test").__str__() == '"""test"""'
+
+    def test_docstring_statement(self):
+        assert Docstring(Statement("test")).__str__() == '"""test"""'
+
+    def test_docstring_call(self):
+        c = Call(name="thing", caller_list=['a', Statement('b'), 'c'], arg_names=['x'])
+        assert Docstring(c).__str__() == '"""a.b.c.thing(x)"""'
 
 
 class TestAssignment():
-    pass
+
+    def test_assignment(self):
+        assert Assignment('x', '1').__str__() == 'x = 1'
+
+    def test_assignment_statement(self):
+        assert Assignment(Statement('x'), '1').__str__() == 'x = 1'
+
+    def test_assignment_call(self):
+        c = Call(name="thing", caller_list=['a', Statement('b'), 'c'], arg_names=['x'])
+        assert Assignment('x', c).__str__() == 'x = a.b.c.thing(x)'
