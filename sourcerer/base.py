@@ -1,6 +1,6 @@
 #!env/bin/python
-from pdb import set_trace
 import re
+from numbers import Number
 
 
 class Statement(object):
@@ -144,7 +144,7 @@ class Statement(object):
             child_renderer = child.build_renderer(level=level + increment)
             while 1:
                 try:
-                    yield child_renderer.next()
+                    yield next(child_renderer)
                 except StopIteration:
                     break
 
@@ -152,19 +152,27 @@ class Statement(object):
     def to_statement(item):
         """ Convert a string to a Statement
 
-        If the argument passed is already a Statement, return it unaltered
-        If the argument passed is a Non-string or statement, return an empty Statement
+        If the argument passed is already a Statement or Statment derivitive, return it unaltered
+        If the argument passed is a Non-Statment, return input as a Statement
 
         Args:
             item (str, Statement): The object to be converted to a Statement
         """
-        if isinstance(item, basestring):
-            item = Statement(item)
-        elif isinstance(item, Statement):
-            pass
+        if isinstance(item, Statement):
+            return item
         else:
-            item = Statement()
-        return item
+            return Statement(item)
+
+    @staticmethod
+    def make_valid(name):
+        """ Convert a string to a valid python name
+
+        Args:
+            name (string): The name to be converted
+        """
+        name = re.sub('[^0-9a-zA-Z_]', '', str(name))  # Remove invalid characters
+        name = re.sub('^[^a-zA-Z_]+', '', str(name))   # Remove leading characters until we find a letter or underscore
+        return name
 
 
 class Name(Statement):
@@ -185,17 +193,6 @@ class Name(Statement):
         self.line_ending = ''
         self.code = self.make_valid(code) if validate else code
 
-    @staticmethod
-    def make_valid(name):
-        """ Convert a string to a valid python name
-
-        Args:
-            name (string): The name to be converted
-        """
-        name = re.sub('[^0-9a-zA-Z_]', '', name)  # Remove invalid characters
-        name = re.sub('^[^a-zA-Z_]+', '', name)   # Remove leading characters until we find a letter or underscore
-        return name
-
 
 class Str(Statement):
     """ A quoted string
@@ -211,20 +208,25 @@ class Str(Statement):
         self.line_ending = ''
         self.code = self.string_args(code, single)
 
-    @staticmethod
-    def string_args(args, single):
-        """ Enclose your positional arguments in strings so it can be used as an
-        argument, rather than part of the arg spec.
+    def string_args(self, args, single):
+        """ Apply single or double quotes to the strings provided.
 
         Args:
-            args (list/string): A string/list of strings to be quoted
+            args (string): A string to be quoted
+            single (bool): Use single quotes rather than double
         """
-        base = '"{}"'
+
+        self.base = '"{}"'
+        self.quote_type = '"'
         if single:
-            base = "'{}'"
-        if isinstance(args, basestring) or isinstance(args, Statement):
-            return base.format(args)
-        return [base.format(arg) for arg in args]
+            self.base = "'{}'"
+            self.quote_type = "'"
+        escaped = "\\{}".format(self.quote_type)
+        if isinstance(args, Str):
+			args = str(args).strip(args.quote_type)
+        if isinstance(args, str) or isinstance(args, Statement):
+            args = str(args).replace(self.quote_type, escaped)
+            return self.base.format(args)
 
 
 class Num(Statement):
