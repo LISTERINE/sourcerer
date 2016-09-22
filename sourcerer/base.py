@@ -82,10 +82,10 @@ class Statement(object):
                     current_node = child
 
     def from_parent(self, parent):
-        """ Append this statement to a parents scope
+        """ Append this statement to the scope of a parent statement
 
         Args:
-            parent (Statement): The aprrent to be appended to
+            parent (Statement): The parent to append this statement to
         """
         if isinstance(parent, Statement):
             parent.scope.append(self)
@@ -223,7 +223,7 @@ class Str(Statement):
             self.quote_type = "'"
         escaped = "\\{}".format(self.quote_type)
         if isinstance(args, Str):
-			args = str(args).strip(args.quote_type)
+            args = str(args).strip(args.quote_type)
         if isinstance(args, str) or isinstance(args, Statement):
             args = str(args).replace(self.quote_type, escaped)
             return self.base.format(args)
